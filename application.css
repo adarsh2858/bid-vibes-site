@@ -45,3 +45,7 @@ body {
 #slideset > *:nth-child(3) {
   animation-delay: 8s;
 }
+
+.navbar{
+  height: 10px;
+}

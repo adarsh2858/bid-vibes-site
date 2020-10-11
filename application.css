@@ -1,14 +1,47 @@
 body {
-    background-image: url(http://i.imgur.com/K3mPv14.jpg);
+  background-image: url(http://i.imgur.com/K3mPv14.jpg);
 }
-div{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    height: 750px;
+#texts {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 750px;
+  position: relative;
 }
 
 #view_campgrounds {
-    margin: 10px;
+  margin: 15px;
+}
+
+#slideset {
+  height: 10em;
+  position: relative;
+}
+
+#slideset > * {
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation: 12s autoplay1 infinite;
+}
+
+@keyframes autoplay1 {
+  0% {
+    visibility: visible;
+  }
+  33.33% {
+    visibility: hidden;
+  }
+}
+
+#slideset > *:nth-child(1) {
+  animation-delay: 0s;
+}
+#slideset > *:nth-child(2) {
+  animation-delay: 4s;
+}
+#slideset > *:nth-child(3) {
+  animation-delay: 8s;
 }

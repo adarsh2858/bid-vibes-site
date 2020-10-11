@@ -1,17 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="application.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <title>Yelp Camp</title>
-</head>
-<body>
-    <div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="application.css" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <title>Personal YelpCamp</title>
+    <style></style>
+  </head>
+  <body>
+    <div style="position: relative">
+      <div style="position: absolute" id="slideset">
+        <div>
+          <img src="assets/cloudy.jpg" alt="cloudy" />
+        </div>
+        <div>
+          <img src="assets/dog.jpg" alt="dog" />
+        </div>
+        <div>
+          <img src="assets/sunflower.jpg" alt="sunflower" />
+        </div>
+      </div>
+      <div id="texts">
         <h3>Welcome to YelpCamp!</h3>
-        <button class="btn btn-success" id="view_campgrounds">View All Campgrounds</button>
+        <button class="btn btn-success" id="view_campgrounds">
+          View All Campgrounds
+        </button>
+      </div>
     </div>
     <script src="index.js"></script>
-</body>
+  </body>
 </html>

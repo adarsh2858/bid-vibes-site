@@ -1,0 +1,39 @@
+{
+  "name": "personal-yelp-camp",
+  "version": "1.0.0",
+  "description": "Website to create campgrounds with certain parameters.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-server": "nodemon server/index.js",
+    "build": "webpack",
+    "start": "webpack-dev-server --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adarsh2858/personal-yelp-camp.git"
+  },
+  "keywords": [
+    "yelp-camp"
+  ],
+  "author": "Adarsh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adarsh2858/personal-yelp-camp/issues"
+  },
+  "homepage": "https://github.com/adarsh2858/personal-yelp-camp#readme",
+  "dependencies": {
+    "@babel/core": "^7.7.4",
+    "@babel/preset-env": "^7.7.4",
+    "@babel/preset-react": "^7.7.4",
+    "axios": "^0.19.0",
+    "babel-loader": "^8.0.6",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.2",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.11.0"
+  }
+}

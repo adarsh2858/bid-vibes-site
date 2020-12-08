@@ -1,6 +1,7 @@
 body {
   background-image: url(http://i.imgur.com/K3mPv14.jpg);
 }
+
 #texts {
   display: flex;
   justify-content: center;
@@ -15,22 +16,38 @@ body {
 }
 
 #slideset {
-  height: 10em;
+  height: 1em;
   position: relative;
 }
 
 #slideset > * {
+  height: 100vh;
+  width: 100vw;
   visibility: hidden;
   position: absolute;
   top: 0;
   left: 0;
-  animation: 12s autoplay1 infinite;
+  animation: autoplay1 16s linear infinite;
 }
 
 @keyframes autoplay1 {
-  0% {
+  0%{
     visibility: visible;
   }
+  /* 0% {
+    opacity: 0;
+    animation-timing-function: ease-in;
+  }
+  10% {
+    opacity: 1;
+    animation-timing-function: ease-out;
+  }
+  20% {
+    opacity: 1;
+  }
+  30% {
+    opacity: 0;
+  } */
   33.33% {
     visibility: hidden;
   }
@@ -44,6 +61,9 @@ body {
 }
 #slideset > *:nth-child(3) {
   animation-delay: 8s;
+}
+#slideset > *:nth-child(4) {
+  animation-delay: 12s;
 }
 
 .navbar{

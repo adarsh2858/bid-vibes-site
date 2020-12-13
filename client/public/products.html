@@ -20,20 +20,20 @@
   <body>
     <nav class="navbar bg-light">
       <div class="container">
-        <a class="navbar-brand" href="/application.html">
+        <a class="navbar-brand" href="/">
           <img width="100sp" src="images/yelp_camp_logo.jpg" alt="Site Logo" />
         </a>
         <div class="">
-          <a class="m-3" href="./login.html">Login</a>
-          <a class="m-3" href="./register.html">Sign Up</a>
+          <a class="m-3" href="/login">Login</a>
+          <a class="m-3" href="/register">Sign Up</a>
         </div>
       </div>
     </nav>
 
     <div class="container">
       <div class="p-4 my-4">
-        <h1>Welcome to Campgrounds</h1>
-        <button class="btn btn-primary">Add New Campground</button>
+        <div id="root"></div>
+        <button class="btn btn-primary" onclick="window.location='/products/new'">Add New Product</button>
       </div>
 
       <div class="bg-success">
@@ -42,5 +42,7 @@
         <button class="btn btn-primary">More Info</button>
       </div>
     </div>
+    <!-- We need the following script for webpack to render React -->
+    <script src="bundle.js"></script>
   </body>
 </html>

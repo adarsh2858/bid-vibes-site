@@ -1,12 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import Register from "./Register";
+import LikeButton from "./LikeButton";
 
 class App extends React.Component {
-    render() {
-        return (
-            <h1>Welcome to React!</h1>
-        )
-    }
+  render() {
+    return (
+      <div>
+        <h1>Welcome to React!</h1>
+        <Register />
+      </div>
+    );
+  }
 }
 
-ReactDOM.render(<App/>, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));

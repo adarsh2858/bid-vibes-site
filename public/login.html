@@ -15,15 +15,17 @@
     </style>
   </head>
   <body>
-    <form action="/helloWorld.html" method="GET">
-      <div class="form-group">
+    <form action="/login" method="POST">
+      <input placeholder="Username" type="text" name="username" required/>
+      <input placeholder="Password" type="password" name="password" required/>
+      <!-- <div class="form-group">
           <label for="username">Username</label>
-        <input placeholder="Username" type="text" required/>
+        <input placeholder="Username" type="text" name="username" required/>
       </div>
       <div class="form-group">
           <label for="password">Password</label>
-        <input placeholder="Password" type="password" required/>
-      </div>
+        <input placeholder="Password" type="password" name="password" required/>
+      </div> -->
       <div class="form-group">
         <button type="submit" class="btn btn-primary">Submit</button>
       </div>

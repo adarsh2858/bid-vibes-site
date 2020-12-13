@@ -59,6 +59,15 @@ app.get("/products", (req, res) => {
   res.sendFile("products.html", { root: "client/public" });
 });
 
+app.get("/all-products", (req, res)=>{
+  connection.query("SELECT * FROM products;", function (err, rows, fields) {
+    if(err)
+      throw err;
+    console.log("SUCCESS - ", rows);
+    res.send(rows);
+  })
+})
+
 app.get("/products/new", (req, res) => {
   res.sendFile("new_product.html", { root: "client/public" });
 });

@@ -9,6 +9,7 @@ const AllProducts = () => {
         return response.json();
       })
       .then((products) => {
+        console.log(products);
         setProductsList(products);
       })
       .catch((err) => {

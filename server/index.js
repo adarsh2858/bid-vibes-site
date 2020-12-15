@@ -16,7 +16,7 @@ app.use(express.static("client/public"));
 
 // middleware to parse body for fetching form data
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({extended: true}));
 
 // get the mysql service
 var mysql = require("mysql");
@@ -59,14 +59,18 @@ app.get("/products", (req, res) => {
   res.sendFile("products.html", { root: "client/public" });
 });
 
-app.get("/all-products", (req, res)=>{
-  connection.query("SELECT * FROM products;", function (err, rows, fields) {
-    if(err)
-      throw err;
-    console.log("SUCCESS - ", rows);
-    res.send(rows);
-  })
-})
+app.get("/all-products", (req, res) => {
+  connection.query(
+    `create table if not exists products (id INT(6) unsigned auto_increment primary key,
+    name varchar(20) not null, description varchar(30) not null); 
+    SELECT * FROM products;`,
+    function (err, rows, fields) {
+      if (err) throw err;
+      console.log("SUCCESS - ", rows);
+      res.send(rows[1]);
+    }
+  );
+});
 
 app.get("/products/new", (req, res) => {
   res.sendFile("new_product.html", { root: "client/public" });
@@ -74,9 +78,7 @@ app.get("/products/new", (req, res) => {
 
 app.post("/products/new", (req, res) => {
   //perform a query
-  $query = `create table if not exists products (id INT(6) unsigned auto_increment primary key,
-    name varchar(20) not null, description varchar(30) not null);
-    insert into products (name, description) values ('${req.body.name}','${req.body.description}')`;
+  $query = `insert into products (name, description) values ('${req.body.name}','${req.body.description}')`;
 
   connection.query($query, function (err, rows, fields) {
     if (err) {

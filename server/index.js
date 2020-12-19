@@ -7,6 +7,7 @@
 const express = require("express");
 const app = express();
 const port = 3000;
+const path = require("path");
 
 const axios = require("axios");
 
@@ -16,7 +17,7 @@ app.use(express.static("client/public"));
 
 // middleware to parse body for fetching form data
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 
 // get the mysql service
 var mysql = require("mysql");
@@ -51,6 +52,9 @@ connection.query($query, function (err, rows, fields) {
   userCount = rows[0].total;
 });
 
+app.set("views", path.join("client/public"));
+app.set("view engine", "ejs");
+
 app.get("/", (req, res) => {
   res.sendFile("app.html", { root: "client/public" });
 });
@@ -59,15 +63,25 @@ app.get("/products", (req, res) => {
   res.sendFile("products.html", { root: "client/public" });
 });
 
+app.get("/all-products", (req, res) => {
+  connection.query(
+    `create table if not exists products (id INT(6) unsigned auto_increment primary key,
+    name varchar(20) not null, description varchar(30) not null); 
+    SELECT * FROM products;`,
+    function (err, rows, fields) {
+      if (err) throw err;
+      res.send(rows[1]);
+    }
+  );
+});
+
 app.get("/products/new", (req, res) => {
   res.sendFile("new_product.html", { root: "client/public" });
 });
 
 app.post("/products/new", (req, res) => {
   //perform a query
-  $query = `create table if not exists products (id INT(6) unsigned auto_increment primary key,
-    name varchar(20) not null, description varchar(30) not null);
-    insert into products (name, description) values ('${req.body.name}','${req.body.description}')`;
+  $query = `insert into products (name, description) values ('${req.body.name}','${req.body.description}')`;
 
   connection.query($query, function (err, rows, fields) {
     if (err) {
@@ -75,9 +89,33 @@ app.post("/products/new", (req, res) => {
       return res.redirect("/products/new");
     }
 
-    console.log("Query successfully executed: ", rows);
     return res.redirect("/products");
   });
+});
+
+app.get("/products/:id/edit", (req, res) => {
+  connection.query(
+    "SELECT * FROM products WHERE id = ?",
+    [req.params.id],
+    (error, results, fields) => {
+      if (error) console.log("ERROR while editing - " + error);
+      res.render("edit_product", {
+        product: results[0],
+      });
+    }
+  );
+});
+
+app.post("/products/:id/edit", (req, res) => {
+  $query = `UPDATE products SET name = '${req.body.name}', 
+    description = '${req.body.description}' WHERE ID = '${req.params.id}'`;
+
+  connection.query($query, (err) => {
+    if (err) {
+      console.log("ERROR while editing - " + err);
+    }
+  });
+  return res.redirect("/products");
 });
 
 app.get("/users", (req, res) => {

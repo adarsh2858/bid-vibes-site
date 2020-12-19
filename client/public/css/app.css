@@ -15,26 +15,22 @@ body {
   margin: 15px;
 }
 
-#slideset {
-  height: 1em;
-  position: relative;
-}
-
-#slideset > * {
-  height: 100vh;
-  width: 100vw;
-  visibility: hidden;
+.slideset li {
+  height: 100%;
+  width: 100%;
   position: absolute;
   top: 0;
   left: 0;
-  animation: autoplay1 16s linear infinite;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  opacity: 0;
+  z-index: 0;
+  animation: autoplay1 50s linear infinite;
 }
 
 @keyframes autoplay1 {
-  0%{
-    visibility: visible;
-  }
-  /* 0% {
+  0% {
     opacity: 0;
     animation-timing-function: ease-in;
   }
@@ -47,23 +43,27 @@ body {
   }
   30% {
     opacity: 0;
-  } */
-  33.33% {
-    visibility: hidden;
   }
 }
 
-#slideset > *:nth-child(1) {
-  animation-delay: 0s;
+.slideset > li:nth-child(1) {
+  background-image: url(http://i.imgur.com/K3mPv14.jpg);
 }
-#slideset > *:nth-child(2) {
-  animation-delay: 4s;
+.slideset > li:nth-child(2) {
+  background-image: url(../images/dog.jpg);
+  animation-delay: 10s;
 }
-#slideset > *:nth-child(3) {
-  animation-delay: 8s;
+.slideset > li:nth-child(3) {
+  background-image: url(../images/best_beach.jpg);
+  animation-delay: 20s;
 }
-#slideset > *:nth-child(4) {
-  animation-delay: 12s;
+.slideset > li:nth-child(4) {
+  background-image: url(../images/img_ash.jpg);
+  animation-delay: 30s;
+}
+.slideset > li:nth-child(5) {
+  background-image: url(../images/sunflower.jpg);
+  animation-delay: 40s;
 }
 
 .navbar{

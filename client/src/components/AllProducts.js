@@ -17,7 +17,7 @@ const AllProducts = () => {
   }, []);
 
   return (
-    <div className="bg-white pt-4 row">
+    <div className="bg-white rounded pt-4 row">
       {productsList.length > 0
         ? productsList.map((product) => (
             <div

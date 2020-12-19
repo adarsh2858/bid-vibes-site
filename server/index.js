@@ -60,7 +60,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/products", (req, res) => {
-  res.sendFile("products.html", { root: "client/public" });
+  res.sendFile("all_products.html", { root: "client/public" });
 });
 
 app.get("/all-products", (req, res) => {

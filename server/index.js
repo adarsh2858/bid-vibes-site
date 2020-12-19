@@ -118,6 +118,18 @@ app.post("/products/:id/edit", (req, res) => {
   return res.redirect("/products");
 });
 
+app.get("/products/:id/delete", (req, res) => {
+  $query = `DELETE FROM products WHERE ID = ${req.params.id}`;
+  
+  connection.query($query, (err) => {
+    if (err) {
+      console.log("ERROR while deleting - " + err);
+    }
+  });
+
+  return res.redirect("/products");
+});
+
 app.get("/products/:id/show", (req, res) => {
   console.log("SHOW PAGE = "+req.params.id);
   connection.query(

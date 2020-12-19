@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 
 const Login = () => {
   const firstVariable = "Hello World";
+
   return (
     <div>
       <form action="/login" method="POST">

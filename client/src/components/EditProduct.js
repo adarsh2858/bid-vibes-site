@@ -1,16 +1,19 @@
 import React from "react";
 
-const NewProduct = () => {
+const EditProduct = (props) => {
+
+  console.log(props);
+
   return (
     <div className="p-4">
-      <form method="post" action="/products/new">
+      <form action="/products/:id/edit" method="PUT">
         <div className="form-group">
           <label>Name</label>
-          <input type="text" name="name" required/>
+          <input type="text" name="name" value={props.name} />
         </div>
           <label>Description</label>
         <div className="form-group">
-          <textarea rows="10" name="description" />
+          <textarea rows="10" name="description" value={props.description} />
         </div>
         <button className="btn btn-success">Submit</button>
       </form>
@@ -18,4 +21,4 @@ const NewProduct = () => {
   );
 };
 
-export default NewProduct;
+export default EditProduct;

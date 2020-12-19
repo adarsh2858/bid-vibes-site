@@ -120,6 +120,16 @@ app.post("/products/:id/edit", (req, res) => {
 
 app.get("/products/:id/show", (req, res) => {
   console.log("SHOW PAGE = "+req.params.id);
+  connection.query(
+    "SELECT * FROM products WHERE id = ?",
+    [req.params.id],
+    (error, results, fields) => {
+      if (error) console.log("ERROR while editing - " + error);
+      res.render("show_product", {
+        product: results[0],
+      });
+    }
+  );
 });
 
 app.get("/users", (req, res) => {

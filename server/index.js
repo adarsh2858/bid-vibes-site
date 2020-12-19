@@ -118,6 +118,18 @@ app.post("/products/:id/edit", (req, res) => {
   return res.redirect("/products");
 });
 
+app.get("/products/:id/delete", (req, res) => {
+  $query = `DELETE FROM products WHERE ID = ${req.params.id}`;
+  
+  connection.query($query, (err) => {
+    if (err) {
+      console.log("ERROR while deleting - " + err);
+    }
+  });
+
+  return res.redirect("/products");
+});
+
 app.get("/users", (req, res) => {
   axios.get("https://randomuser.me/api/?page=1&results=10").then((response) => {
     res.send(response.data);

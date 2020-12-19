@@ -26,7 +26,7 @@ const AllProducts = () => {
             >
               <div>
                 <img
-                  className="rounded mb-4"
+                  className="rounded mb-4 img-fluid"
                   width="300"
                   src="images/best_beach.jpg"
                   alt="Beach Pic"

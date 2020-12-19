@@ -27,7 +27,14 @@ const AllProducts = () => {
                 <p>{product.description}</p>
               </div>
               <div>
-                <button className="btn btn-primary m-2">More Info</button>
+                <button
+                  className="btn btn-primary m-2"
+                  onClick={() =>
+                    (window.location = `/products/${product.id}/show`)
+                  }
+                >
+                  More Info
+                </button>
                 <button
                   className="m-2 btn btn-success"
                   onClick={() =>

@@ -130,6 +130,20 @@ app.get("/products/:id/delete", (req, res) => {
   return res.redirect("/products");
 });
 
+app.get("/products/:id/show", (req, res) => {
+  console.log("SHOW PAGE = "+req.params.id);
+  connection.query(
+    "SELECT * FROM products WHERE id = ?",
+    [req.params.id],
+    (error, results, fields) => {
+      if (error) console.log("ERROR while editing - " + error);
+      res.render("show_product", {
+        product: results[0],
+      });
+    }
+  );
+});
+
 app.get("/users", (req, res) => {
   axios.get("https://randomuser.me/api/?page=1&results=10").then((response) => {
     res.send(response.data);

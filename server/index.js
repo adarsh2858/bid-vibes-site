@@ -118,6 +118,10 @@ app.post("/products/:id/edit", (req, res) => {
   return res.redirect("/products");
 });
 
+app.get("/products/:id/show", (req, res) => {
+  console.log("SHOW PAGE = "+req.params.id);
+});
+
 app.get("/users", (req, res) => {
   axios.get("https://randomuser.me/api/?page=1&results=10").then((response) => {
     res.send(response.data);

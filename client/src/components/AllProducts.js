@@ -17,11 +17,11 @@ const AllProducts = () => {
   }, []);
 
   return (
-    <div className="bg-white rounded pt-4 row">
+    <div className="bg-gray-100 rounded p-4 row">
       {productsList.length > 0
         ? productsList.map((product) => (
             <div
-              className="col-xs-12 col-sm-12 col-md-6 col-lg-4 mb-4"
+              className="bg-white p-4 col-xs-12 col-sm-12 col-md-6 col-lg-4 mb-4"
               key={product.id}
             >
               <div>

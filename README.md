@@ -5,5 +5,7 @@ Frontend - ReactJS.
 
 Backend - NodeJS.
 
-Refer my publication - https://www.researchgate.net/publication/337415279_SECURE_ONLINE_AUCTION_SYSTEM [Full text available only for logged in users]
+Refer my publication - https://www.researchgate.net/publication/337415279_SECURE_ONLINE_AUCTION_SYSTEM  
+[Full text available only for logged in users]
+
 Public - https://www2.slideshare.net/AdarshAgarwal41/web-security-report

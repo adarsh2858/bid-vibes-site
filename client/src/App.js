@@ -5,6 +5,7 @@ import LikeButton from "./components/LikeButton";
 import NewProduct from "./components/NewProduct";
 import EditProduct from "./components/EditProduct";
 import AllProducts from "./components/AllProducts";
+import "regenerator-runtime/runtime";
 
 class App extends React.Component {
   render() {

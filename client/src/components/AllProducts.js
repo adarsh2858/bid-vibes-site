@@ -22,7 +22,7 @@ const AllProducts = () => {
         ? productsList.map((product) => (
             <div key={product.id}>
               <div className="m-3">
-                <img width="300" src="images/best_beach.jpg" alt="Beach Pic" />
+                <img width="300" src={product.image} alt="Product Image" />
                 <h4 id="header">{product.name}</h4>
                 <p>{product.description}</p>
               </div>

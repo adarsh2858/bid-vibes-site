@@ -75,7 +75,7 @@ app.get("/products", (req, res) => {
 app.get("/all-products", (req, res) => {
   connection.query(
     `create table if not exists products (id INT(6) unsigned auto_increment primary key,
-    name varchar(20) not null, description varchar(30) not null); 
+    name varchar(20) not null, description varchar(30) not null, image text); 
     SELECT * FROM products;`,
     function (err, rows, fields) {
       if (err) throw err;

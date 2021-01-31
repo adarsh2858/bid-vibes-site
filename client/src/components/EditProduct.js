@@ -52,8 +52,24 @@ const EditProduct = () => {
             />
           </div>
           <div className="form-group">
-            <input name="image" type="file" onChange={onFileChange} />
-            {uploadedImage && <img className="img-fluid" src={uploadedImage.secure_url} alt="Product Image" />}
+            <input type="file" onChange={onFileChange} />
+            {!uploadedImage ? (
+              <input name="image" type="text" placeholder="Image URL" />
+            ) : (
+              <input
+                name="image"
+                type="text"
+                value={uploadedImage.secure_url}
+                placeholder="Image URL"
+              />
+            )}
+            {uploadedImage && (
+              <img
+                className="img-fluid"
+                src={uploadedImage.secure_url}
+                alt="Product Image"
+              />
+            )}
           </div>
           <button className="btn btn-success">Submit</button>
         </form>

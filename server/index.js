@@ -119,7 +119,8 @@ app.get("/products/:id/editInfo", (req, res) => {
 
 app.post("/products/:id/edit", (req, res) => {
   $query = `UPDATE products SET name = '${req.body.name}', 
-    description = '${req.body.description}' WHERE ID = '${req.params.id}'`;
+    description = '${req.body.description}',
+    image = '${req.body.image}' WHERE ID = '${req.params.id}'`;
 
   connection.query($query, (err) => {
     if (err) {

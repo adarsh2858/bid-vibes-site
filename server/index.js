@@ -94,14 +94,16 @@ app.post("/products/new", (req, res) => {
 });
 
 app.get("/products/:id/edit", (req, res) => {
+  res.sendFile("edit_product.html", { root: "client/public" });
+});
+
+app.get("/products/:id/editInfo", (req, res) => {
   connection.query(
     "SELECT * FROM products WHERE id = ?",
     [req.params.id],
     (error, results, fields) => {
       if (error) console.log("ERROR while editing - " + error);
-      res.render("edit_product", {
-        product: results[0],
-      });
+      res.send(results[0]);
     }
   );
 });

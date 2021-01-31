@@ -5,6 +5,8 @@
 // import body-parser middleware which looks at requests where content-type of header matches
 
 const express = require("express");
+const formData = require("express-form-data");
+const cloudinary = require('cloudinary');
 const app = express();
 const port = 3000;
 const path = require("path");
@@ -13,6 +15,13 @@ const axios = require("axios");
 
 var userCount;
 
+cloudinary.config({
+  cloud_name: "dj2xpmtn5",
+  api_key: "541919797753448",
+  api_secret: "DrbaMbi5MbaF0mF3axbspgXb35U"
+})
+
+app.use(formData.parse())
 app.use(express.static("client/public"));
 
 // middleware to parse body for fetching form data
@@ -119,6 +128,13 @@ app.post("/products/:id/edit", (req, res) => {
   });
   return res.redirect("/products");
 });
+
+app.post("/image-upload", (req, res) => {
+  cloudinary.uploader.upload(req.files.myFile.path)
+    .then(image => {
+      res.send(image);
+    } )
+})
 
 app.get("/products/:id/delete", (req, res) => {
   $query = `DELETE FROM products WHERE ID = ${req.params.id}`;

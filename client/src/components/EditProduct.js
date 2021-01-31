@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 const EditProduct = () => {
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [uploadedImage, setUploadedImage] = useState(null);
   const [loadedProduct, setLoadedProduct] = useState(null);
 
   useEffect(() => {
@@ -11,6 +13,27 @@ const EditProduct = () => {
     };
     loadProduct();
   }, []);
+
+  const onFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
+  const onFileUpload = async () => {
+    const formData = new FormData();
+    formData.append("myFile", selectedFile);
+
+    const imageInfo = await fetch("http://localhost:3000/image-upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    const image = await imageInfo.json();
+    setUploadedImage(image);
+  };
+
+  useEffect(() => {
+    if (selectedFile) onFileUpload();
+  }, [selectedFile]);
 
   return (
     <div className="p-4">
@@ -27,6 +50,10 @@ const EditProduct = () => {
               name="description"
               defaultValue={loadedProduct.description}
             />
+          </div>
+          <div className="form-group">
+            <input name="image" type="file" onChange={onFileChange} />
+            {uploadedImage && <img className="img-fluid" src={uploadedImage.secure_url} alt="Product Image" />}
           </div>
           <button className="btn btn-success">Submit</button>
         </form>

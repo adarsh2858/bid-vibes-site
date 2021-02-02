@@ -5,6 +5,8 @@
 // import body-parser middleware which looks at requests where content-type of header matches
 
 const express = require("express");
+const formData = require("express-form-data");
+const cloudinary = require('cloudinary');
 const app = express();
 const port = 3000;
 const path = require("path");
@@ -13,6 +15,13 @@ const axios = require("axios");
 
 var userCount;
 
+cloudinary.config({
+  cloud_name: "dj2xpmtn5",
+  api_key: "541919797753448",
+  api_secret: "DrbaMbi5MbaF0mF3axbspgXb35U"
+})
+
+app.use(formData.parse())
 app.use(express.static("client/public"));
 
 // middleware to parse body for fetching form data
@@ -66,7 +75,7 @@ app.get("/products", (req, res) => {
 app.get("/all-products", (req, res) => {
   connection.query(
     `create table if not exists products (id INT(6) unsigned auto_increment primary key,
-    name varchar(20) not null, description varchar(30) not null); 
+    name varchar(20) not null, description varchar(30) not null, image text); 
     SELECT * FROM products;`,
     function (err, rows, fields) {
       if (err) throw err;
@@ -94,21 +103,24 @@ app.post("/products/new", (req, res) => {
 });
 
 app.get("/products/:id/edit", (req, res) => {
+  res.sendFile("edit_product.html", { root: "client/public" });
+});
+
+app.get("/products/:id/editInfo", (req, res) => {
   connection.query(
     "SELECT * FROM products WHERE id = ?",
     [req.params.id],
     (error, results, fields) => {
       if (error) console.log("ERROR while editing - " + error);
-      res.render("edit_product", {
-        product: results[0],
-      });
+      res.send(results[0]);
     }
   );
 });
 
 app.post("/products/:id/edit", (req, res) => {
   $query = `UPDATE products SET name = '${req.body.name}', 
-    description = '${req.body.description}' WHERE ID = '${req.params.id}'`;
+    description = '${req.body.description}',
+    image = '${req.body.image}' WHERE ID = '${req.params.id}'`;
 
   connection.query($query, (err) => {
     if (err) {
@@ -117,6 +129,13 @@ app.post("/products/:id/edit", (req, res) => {
   });
   return res.redirect("/products");
 });
+
+app.post("/image-upload", (req, res) => {
+  cloudinary.uploader.upload(req.files.myFile.path)
+    .then(image => {
+      res.send(image);
+    } )
+})
 
 app.get("/products/:id/delete", (req, res) => {
   $query = `DELETE FROM products WHERE ID = ${req.params.id}`;

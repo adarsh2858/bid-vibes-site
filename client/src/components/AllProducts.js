@@ -28,8 +28,8 @@ const AllProducts = () => {
                 <img
                   className="rounded mb-4 img-fluid"
                   width="300"
-                  src="images/best_beach.jpg"
-                  alt="Beach Pic"
+                  src={product.image}
+                  alt="Product Image"
                 />
                 <div className="mx-2">
                   <h4 id="header">{product.name}</h4>

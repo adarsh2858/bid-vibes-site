@@ -41,11 +41,12 @@ const EditProduct = () => {
         <form action="edit" method="POST">
           <div className="form-group">
             <label>Name</label>
-            <input type="text" name="name" defaultValue={loadedProduct.name} />
+            <input className="form-control" type="text" name="name" defaultValue={loadedProduct.name} />
           </div>
           <label>Description</label>
           <div className="form-group">
             <textarea
+              className="form-control"
               rows="10"
               name="description"
               defaultValue={loadedProduct.description}

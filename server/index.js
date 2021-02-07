@@ -10,6 +10,7 @@ const cloudinary = require('cloudinary');
 const app = express();
 const port = 3000;
 const path = require("path");
+const jwtAuthentication = require('./jwt-authentication');
 
 const axios = require("axios");
 
@@ -27,6 +28,7 @@ app.use(express.static("client/public"));
 // middleware to parse body for fetching form data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(jwtAuthentication.jwtAuthenticationMiddleware);
 
 // get the mysql service
 var mysql = require("mysql");
@@ -63,6 +65,8 @@ connection.query($query, function (err, rows, fields) {
 
 app.set("views", path.join("client/public"));
 app.set("view engine", "ejs");
+
+app.post('/jwt-login', jwtAuthentication.jwtLogin);
 
 app.get("/", (req, res) => {
   res.sendFile("app.html", { root: "client/public" });

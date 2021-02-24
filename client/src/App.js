@@ -3,6 +3,9 @@ import ReactDOM from "react-dom";
 import Login from "./components/Login";
 import LikeButton from "./components/LikeButton";
 import NewProduct from "./components/NewProduct";
+import EditProduct from "./components/EditProduct";
+import AllProducts from "./components/AllProducts";
+import "regenerator-runtime/runtime";
 
 class App extends React.Component {
   render() {
@@ -33,4 +36,16 @@ if (document.getElementById("new_product_container")) {
     <NewProduct />,
     document.getElementById("new_product_container")
   );
+}
+
+if (document.getElementById("edit_product_container")) {
+  ReactDOM.render(
+    // <EditProduct name={currentName} description={currentDescription} />,
+    <EditProduct />,
+    document.getElementById("edit_product_container")
+  );
+}
+
+if (document.getElementById("all_products")) {
+  ReactDOM.render(<AllProducts />, document.getElementById("all_products"));
 }

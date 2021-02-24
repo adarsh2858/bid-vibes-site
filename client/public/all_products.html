@@ -13,6 +13,7 @@
         background-color:rgb(250,240,200);
       }
       .container > div{
+        border-radius: 20px;
         background-color: #F0F0F0;
       }
     </style>
@@ -21,7 +22,7 @@
     <nav class="navbar bg-light">
       <div class="container">
         <a class="navbar-brand" href="/">
-          <img width="100sp" src="images/yelp_camp_logo.jpg" alt="Site Logo" />
+          <img width="100sp" class="img-fluid" src="images/yelp_camp_logo.jpg" alt="Site Logo" />
         </a>
         <div class="">
           <a class="m-3" href="/login">Login</a>
@@ -31,16 +32,12 @@
     </nav>
 
     <div class="container">
-      <div class="p-4 my-4">
-        <div id="root"></div>
-        <button class="btn btn-primary" onclick="window.location='/products/new'">Add New Product</button>
+      <div class="p-5 my-4">
+        <h1>Welcome to Adarsh Products!</h1>
+        <button class="btn btn-primary mt-3" onclick="window.location='/products/new'">Add New Product</button>
       </div>
 
-      <div class="bg-success">
-        <img width="300" src="images/best_beach.jpg" alt="Beach Pic" />
-        <h4 id="header">Rodeoe Beach</h4>
-        <button class="btn btn-primary">More Info</button>
-      </div>
+      <div id="all_products"></div>
     </div>
     <!-- We need the following script for webpack to render React -->
     <script src="bundle.js"></script>

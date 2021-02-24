@@ -4,6 +4,9 @@
 
 // import body-parser middleware which looks at requests where content-type of header matches
 
+// import 'dotenv/config';
+// import cors from 'cors';
+
 const express = require("express");
 const formData = require("express-form-data");
 const cloudinary = require("cloudinary");
@@ -11,6 +14,8 @@ const app = express();
 const { PORT = 3000 } = process.env;
 const path = require("path");
 const jwtAuthentication = require("./jwt-authentication");
+// const flash = require("connect-flash");
+// const session = require("express-session");
 
 const axios = require("axios");
 
@@ -23,12 +28,22 @@ cloudinary.config({
   api_secret: "DrbaMbi5MbaF0mF3axbspgXb35U",
 });
 
+// app.use(express.cookieParser("keyboard cat"));
+// app.use(
+//   session({
+//     secret: "adarsh",
+//     saveUninitialized: true,
+//     resave: true,
+//   })
+// );
+// app.use(flash());
 app.use(formData.parse());
 app.use(express.static("client/public"));
 
 // middleware to parse body for fetching form data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// app.use(cors());
 app.use((req, res, next) => {
   Promise.resolve(promiseObject)
     .then(({ accessToken }) => {

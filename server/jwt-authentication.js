@@ -68,6 +68,7 @@ async function isAuthenticatedMiddleware(req, res, next) {
     return next();
   }
 
+  // req.flash("error", "User not authenticated");
   // res.status(401);
   // res.json({ error: "User not authenticated" });
   res.redirect('/products')

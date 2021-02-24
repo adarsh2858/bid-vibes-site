@@ -4,29 +4,60 @@
 
 // import body-parser middleware which looks at requests where content-type of header matches
 
+// import 'dotenv/config';
+// import cors from 'cors';
+
 const express = require("express");
 const formData = require("express-form-data");
-const cloudinary = require('cloudinary');
+const cloudinary = require("cloudinary");
 const app = express();
-const port = 3000;
+const { PORT = 3000 } = process.env;
 const path = require("path");
+const jwtAuthentication = require("./jwt-authentication");
+// const flash = require("connect-flash");
+// const session = require("express-session");
 
 const axios = require("axios");
 
 var userCount;
+let promiseObject = {};
 
 cloudinary.config({
   cloud_name: "dj2xpmtn5",
   api_key: "541919797753448",
-  api_secret: "DrbaMbi5MbaF0mF3axbspgXb35U"
-})
+  api_secret: "DrbaMbi5MbaF0mF3axbspgXb35U",
+});
 
-app.use(formData.parse())
+// app.use(express.cookieParser("keyboard cat"));
+// app.use(
+//   session({
+//     secret: "adarsh",
+//     saveUninitialized: true,
+//     resave: true,
+//   })
+// );
+// app.use(flash());
+app.use(formData.parse());
 app.use(express.static("client/public"));
 
 // middleware to parse body for fetching form data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// app.use(cors());
+app.use((req, res, next) => {
+  Promise.resolve(promiseObject)
+    .then(({ accessToken }) => {
+      // if (accessToken) res.setHeader("Access-Token", accessToken);
+      if (req) jwtAuthentication.setAccessToken(accessToken);
+      console.log(accessToken);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+
+  next();
+});
+app.use(jwtAuthentication.jwtAuthenticationMiddleware);
 
 // get the mysql service
 var mysql = require("mysql");
@@ -64,6 +95,8 @@ connection.query($query, function (err, rows, fields) {
 app.set("views", path.join("client/public"));
 app.set("view engine", "ejs");
 
+app.post("/jwt-login", jwtAuthentication.jwtLogin);
+
 app.get("/", (req, res) => {
   res.sendFile("app.html", { root: "client/public" });
 });
@@ -84,23 +117,31 @@ app.get("/all-products", (req, res) => {
   );
 });
 
-app.get("/products/new", (req, res) => {
-  res.sendFile("new_product.html", { root: "client/public" });
-});
+app.get(
+  `/products/new`,
+  jwtAuthentication.isAuthenticatedMiddleware,
+  (req, res) => {
+    res.sendFile("new_product.html", { root: "client/public" });
+  }
+);
 
-app.post("/products/new", (req, res) => {
-  //perform a query
-  $query = `insert into products (name, description) values ('${req.body.name}','${req.body.description}')`;
+app.post(
+  "/products/new",
+  jwtAuthentication.isAuthenticatedMiddleware,
+  (req, res) => {
+    //perform a query
+    $query = `insert into products (name, description) values ('${req.body.name}','${req.body.description}')`;
 
-  connection.query($query, function (err, rows, fields) {
-    if (err) {
-      console.log("An error occurred performing the query.");
-      return res.redirect("/products/new");
-    }
+    connection.query($query, function (err, rows, fields) {
+      if (err) {
+        console.log("An error occurred performing the query.");
+        return res.redirect("/products/new");
+      }
 
-    return res.redirect("/products");
-  });
-});
+      return res.redirect("/products");
+    });
+  }
+);
 
 app.get("/products/:id/edit", (req, res) => {
   res.sendFile("edit_product.html", { root: "client/public" });
@@ -131,15 +172,14 @@ app.post("/products/:id/edit", (req, res) => {
 });
 
 app.post("/image-upload", (req, res) => {
-  cloudinary.uploader.upload(req.files.myFile.path)
-    .then(image => {
-      res.send(image);
-    } )
-})
+  cloudinary.uploader.upload(req.files.myFile.path).then((image) => {
+    res.send(image);
+  });
+});
 
 app.get("/products/:id/delete", (req, res) => {
   $query = `DELETE FROM products WHERE ID = ${req.params.id}`;
-  
+
   connection.query($query, (err) => {
     if (err) {
       console.log("ERROR while deleting - " + err);
@@ -150,7 +190,7 @@ app.get("/products/:id/delete", (req, res) => {
 });
 
 app.get("/products/:id/show", (req, res) => {
-  console.log("SHOW PAGE = "+req.params.id);
+  console.log("SHOW PAGE = " + req.params.id);
   connection.query(
     "SELECT * FROM products WHERE id = ?",
     [req.params.id],
@@ -210,6 +250,9 @@ app.post("/login", (req, res) => {
     if (rows[0].found == 0) {
       return res.redirect("/login");
     }
+    // Set an access token using jwt after a successful search in the database
+    promiseObject = jwtAuthentication.jwtLogin(req, res);
+
     return res.redirect("/products");
   });
 });
@@ -222,6 +265,6 @@ app.get("/close", (req, res) => {
   return res.redirect("/products");
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}!`);
+app.listen(PORT, () => {
+  console.log(`Example app listening on port ${PORT}!`);
 });

@@ -29,8 +29,16 @@ function decodeToken(token) {
 // This express middleware attaches `userId` to the `req` object if a user is
 // authenticated. This middleware expects a JWT token to be stored in the
 // `Access-Token` header.
+
+let accessToken;
+
+const setAccessToken = (newAccessToken) => {
+  accessToken = newAccessToken;
+};
+
 const jwtAuthenticationMiddleware = (req, res, next) => {
-  const token = req.header("Access-Token");
+  // const token = req.header("Access-Token");
+  const token = accessToken;
   if (!token) {
     return next();
   }
@@ -60,8 +68,9 @@ async function isAuthenticatedMiddleware(req, res, next) {
     return next();
   }
 
-  res.status(401);
-  res.json({ error: "User not authenticated" });
+  // res.status(401);
+  // res.json({ error: "User not authenticated" });
+  res.redirect('/products')
 }
 
 // This endpoint generates and returns a JWT access token given authentication data.
@@ -76,13 +85,13 @@ const jwtLogin = async (req, res) => {
     return res.json({ error: "Invalid email or password" });
   }
 
-  console.log(user.id);
   const accessToken = encodeToken({ userId: user.id });
-  return res.json({ accessToken });
+  return { accessToken };
 };
 
 module.exports = {
   jwtAuthenticationMiddleware,
   isAuthenticatedMiddleware,
   jwtLogin,
+  setAccessToken,
 };

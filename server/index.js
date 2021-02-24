@@ -4,9 +4,6 @@
 
 // import body-parser middleware which looks at requests where content-type of header matches
 
-// import 'dotenv/config';
-// import cors from 'cors';
-
 const express = require("express");
 const formData = require("express-form-data");
 const cloudinary = require("cloudinary");
@@ -14,8 +11,6 @@ const app = express();
 const { PORT = 3000 } = process.env;
 const path = require("path");
 const jwtAuthentication = require("./jwt-authentication");
-const flash = require("connect-flash");
-const session = require("express-session");
 
 const axios = require("axios");
 

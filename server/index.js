@@ -142,11 +142,11 @@ app.post(
   }
 );
 
-app.get("/products/:id/edit", (req, res) => {
+app.get("/products/:id/edit", jwtAuthentication.isAuthenticatedMiddleware, (req, res) => {
   res.sendFile("edit_product.html", { root: "client/public" });
 });
 
-app.get("/products/:id/editInfo", (req, res) => {
+app.get("/products/:id/editInfo", jwtAuthentication.isAuthenticatedMiddleware, (req, res) => {
   connection.query(
     "SELECT * FROM products WHERE id = ?",
     [req.params.id],
@@ -157,7 +157,7 @@ app.get("/products/:id/editInfo", (req, res) => {
   );
 });
 
-app.post("/products/:id/edit", (req, res) => {
+app.post("/products/:id/edit", jwtAuthentication.isAuthenticatedMiddleware, (req, res) => {
   $query = `UPDATE products SET name = '${req.body.name}', 
     description = '${req.body.description}',
     image = '${req.body.image}' WHERE ID = '${req.params.id}'`;
@@ -176,7 +176,7 @@ app.post("/image-upload", (req, res) => {
   });
 });
 
-app.get("/products/:id/delete", (req, res) => {
+app.get("/products/:id/delete", jwtAuthentication.isAuthenticatedMiddleware, (req, res) => {
   $query = `DELETE FROM products WHERE ID = ${req.params.id}`;
 
   connection.query($query, (err) => {
@@ -256,7 +256,7 @@ app.post("/login", (req, res) => {
   });
 });
 
-app.get("/close", (req, res) => {
+app.get("/close", jwtAuthentication.isAuthenticatedMiddleware, (req, res) => {
   // Close the connection with database
   connection.end(function () {
     // the connection has been closed

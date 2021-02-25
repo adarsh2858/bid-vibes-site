@@ -49,7 +49,6 @@ app.use((req, res, next) => {
     .then(({ accessToken }) => {
       // if (accessToken) res.setHeader("Access-Token", accessToken);
       if (req) jwtAuthentication.setAccessToken(accessToken);
-      console.log(accessToken);
     })
     .catch((err) => {
       console.error(err);

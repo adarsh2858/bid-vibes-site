@@ -13,6 +13,8 @@ const users = [
   },
 ];
 
+
+
 const {
   APP_SECRET = "something really random",
   APP_BASE_URL = "http://localhost:3000",
@@ -47,11 +49,7 @@ const jwtAuthenticationMiddleware = (req, res, next) => {
     const decoded = decodeToken(token);
     const { userId } = decoded;
 
-    console.log("decoded", decoded);
-    console.log("userId", userId);
-
     if (users.find((user) => user.id === userId)) {
-      console.log("found user!");
       req.userId = userId;
     }
   } catch (e) {

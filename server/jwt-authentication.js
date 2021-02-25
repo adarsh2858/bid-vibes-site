@@ -1,19 +1,20 @@
 const njwt = require("njwt");
+var { connection } = require("./index");
 
-const users = [
-  {
-    id: "1",
-    email: "adarsh",
-    password: "ash",
-  },
-  {
-    id: "2",
-    email: "adarshagarwal",
-    password: "adarsh",
-  },
-];
+let users = [];
 
+$query = `SELECT * FROM emp1`;
 
+connection.query($query, function (err, results) {
+  if (err) {
+    console.log("An error occurred  performing the query.");
+    return;
+  }
+
+  users = results;
+  // console.log("Query successfully executed: ", users);
+  // console.log("Query successfully executed: ", JSON.parse(JSON.stringify(results)));
+});
 
 const {
   APP_SECRET = "something really random",
@@ -69,14 +70,14 @@ async function isAuthenticatedMiddleware(req, res, next) {
   // req.flash("error", "User not authenticated");
   // res.status(401);
   // res.json({ error: "User not authenticated" });
-  res.redirect('/products')
+  res.redirect("/products");
 }
 
 // This endpoint generates and returns a JWT access token given authentication data.
 const jwtLogin = async (req, res) => {
   const { username: email, password } = req.body;
   const user = users.find(
-    (user) => user.email === email && user.password === password
+    (user) => user.first === email && user.last === password
   );
 
   if (!user) {

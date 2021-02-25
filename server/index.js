@@ -13,14 +13,49 @@ const cloudinary = require("cloudinary");
 const app = express();
 const { PORT = 3000 } = process.env;
 const path = require("path");
-const jwtAuthentication = require("./jwt-authentication");
 // const flash = require("connect-flash");
 // const session = require("express-session");
 
 const axios = require("axios");
 
-var userCount;
-let promiseObject = {};
+let userCount, promiseObject = {};
+
+// get the mysql service
+const mysql = require("mysql");
+
+// add the credentials to access your database
+const connection = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: null,
+  database: "employee",
+  multipleStatements: true,
+});
+
+exports.connection = connection;
+
+const jwtAuthentication = require("./jwt-authentication");
+
+// connect to mysql
+connection.connect(function (err) {
+  // in case of error
+  if (err) {
+    console.log(err.code);
+    console.log(err.fatal);
+  }
+});
+
+$query = `SELECT COUNT(*) AS total FROM emp1`;
+
+connection.query($query, function (err, rows, fields) {
+  if (err) {
+    console.log("An error occurred  performing the query.");
+    return;
+  }
+
+  console.log("Query successfully executed: ", rows[0].total);
+  userCount = rows[0].total;
+});
 
 cloudinary.config({
   cloud_name: "dj2xpmtn5",
@@ -44,6 +79,7 @@ app.use(express.static("client/public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // app.use(cors());
+
 app.use((req, res, next) => {
   Promise.resolve(promiseObject)
     .then(({ accessToken }) => {
@@ -57,39 +93,6 @@ app.use((req, res, next) => {
   next();
 });
 app.use(jwtAuthentication.jwtAuthenticationMiddleware);
-
-// get the mysql service
-var mysql = require("mysql");
-
-// add the credentials to access your database
-var connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: null,
-  database: "employee",
-  multipleStatements: true,
-});
-
-// connect to mysql
-connection.connect(function (err) {
-  // in case of error
-  if (err) {
-    console.log(err.code);
-    console.log(err.fatal);
-  }
-});
-
-$query = `SELECT COUNT(*) AS total FROM emp1`;
-
-connection.query($query, function (err, rows, fields) {
-  if (err) {
-    console.log("An error occurred  performing the query.");
-    return;
-  }
-
-  console.log("Query successfully executed: ", rows[0].total);
-  userCount = rows[0].total;
-});
 
 app.set("views", path.join("client/public"));
 app.set("view engine", "ejs");

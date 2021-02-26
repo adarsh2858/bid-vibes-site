@@ -18,7 +18,8 @@ const path = require("path");
 
 const axios = require("axios");
 
-let userCount, promiseObject = {};
+let userCount,
+  promiseObject = {};
 
 // get the mysql service
 const mysql = require("mysql");
@@ -145,33 +146,45 @@ app.post(
   }
 );
 
-app.get("/products/:id/edit", jwtAuthentication.isAuthenticatedMiddleware, (req, res) => {
-  res.sendFile("edit_product.html", { root: "client/public" });
-});
+app.get(
+  "/products/:id/edit",
+  jwtAuthentication.isAuthenticatedMiddleware,
+  (req, res) => {
+    res.sendFile("edit_product.html", { root: "client/public" });
+  }
+);
 
-app.get("/products/:id/editInfo", jwtAuthentication.isAuthenticatedMiddleware, (req, res) => {
-  connection.query(
-    "SELECT * FROM products WHERE id = ?",
-    [req.params.id],
-    (error, results, fields) => {
-      if (error) console.log("ERROR while editing - " + error);
-      res.send(results[0]);
-    }
-  );
-});
+app.get(
+  "/products/:id/editInfo",
+  jwtAuthentication.isAuthenticatedMiddleware,
+  (req, res) => {
+    connection.query(
+      "SELECT * FROM products WHERE id = ?",
+      [req.params.id],
+      (error, results, fields) => {
+        if (error) console.log("ERROR while editing - " + error);
+        res.send(results[0]);
+      }
+    );
+  }
+);
 
-app.post("/products/:id/edit", jwtAuthentication.isAuthenticatedMiddleware, (req, res) => {
-  $query = `UPDATE products SET name = '${req.body.name}', 
+app.post(
+  "/products/:id/edit",
+  jwtAuthentication.isAuthenticatedMiddleware,
+  (req, res) => {
+    $query = `UPDATE products SET name = '${req.body.name}', 
     description = '${req.body.description}',
     image = '${req.body.image}' WHERE ID = '${req.params.id}'`;
 
-  connection.query($query, (err) => {
-    if (err) {
-      console.log("ERROR while editing - " + err);
-    }
-  });
-  return res.redirect("/products");
-});
+    connection.query($query, (err) => {
+      if (err) {
+        console.log("ERROR while editing - " + err);
+      }
+    });
+    return res.redirect("/products");
+  }
+);
 
 app.post("/image-upload", (req, res) => {
   cloudinary.uploader.upload(req.files.myFile.path).then((image) => {
@@ -179,17 +192,21 @@ app.post("/image-upload", (req, res) => {
   });
 });
 
-app.get("/products/:id/delete", jwtAuthentication.isAuthenticatedMiddleware, (req, res) => {
-  $query = `DELETE FROM products WHERE ID = ${req.params.id}`;
+app.get(
+  "/products/:id/delete",
+  jwtAuthentication.isAuthenticatedMiddleware,
+  (req, res) => {
+    $query = `DELETE FROM products WHERE ID = ${req.params.id}`;
 
-  connection.query($query, (err) => {
-    if (err) {
-      console.log("ERROR while deleting - " + err);
-    }
-  });
+    connection.query($query, (err) => {
+      if (err) {
+        console.log("ERROR while deleting - " + err);
+      }
+    });
 
-  return res.redirect("/products");
-});
+    return res.redirect("/products");
+  }
+);
 
 app.get("/products/:id/show", (req, res) => {
   console.log("SHOW PAGE = " + req.params.id);
@@ -238,24 +255,11 @@ app.get("/login", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  console.log(req.body);
-  $query = `SELECT COUNT(*) as found FROM emp1 WHERE first = '${req.body.username}' and last = '${req.body.password}'`;
+  promiseObject = jwtAuthentication.jwtLogin(req, res);
 
-  connection.query($query, function (err, rows, fields) {
-    if (err) {
-      console.log("An error occurred performing the query.");
-      return res.redirect("/login");
-    }
-
-    console.log("Query successfully executed: ", rows);
-
-    if (rows[0].found == 0) {
-      return res.redirect("/login");
-    }
-    // Set an access token using jwt after a successful search in the database
-    promiseObject = jwtAuthentication.jwtLogin(req, res);
-
-    return res.redirect("/products");
+  Promise.resolve(promiseObject).then(({ success }) => {
+    if (success) res.redirect("/products");
+    else res.redirect("/login");
   });
 });
 

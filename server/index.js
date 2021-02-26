@@ -46,18 +46,6 @@ connection.connect(function (err) {
   }
 });
 
-$query = `SELECT COUNT(*) AS total FROM emp1`;
-
-connection.query($query, function (err, rows, fields) {
-  if (err) {
-    console.log("An error occurred  performing the query.");
-    return;
-  }
-
-  console.log("Query successfully executed: ", rows[0].total);
-  userCount = rows[0].total;
-});
-
 cloudinary.config({
   cloud_name: "dj2xpmtn5",
   api_key: "541919797753448",
@@ -229,6 +217,18 @@ app.get("/users", (req, res) => {
 });
 
 app.get("/register", (req, res) => {
+  $query = `SELECT COUNT(*) AS total FROM emp1`;
+
+  connection.query($query, function (err, rows, fields) {
+    if (err) {
+      console.log("An error occurred  performing the query.");
+      return;
+    }
+
+    console.log("Query successfully executed: ", rows[0].total);
+    userCount = rows[0].total;
+  });
+
   res.sendFile("register.html", { root: "client/public" });
 });
 
@@ -245,13 +245,12 @@ app.post("/register", (req, res) => {
     }
 
     console.log("Query successfully executed: ", rows);
-    userCount += 1;
 
     promiseObject = jwtAuthentication.jwtLogin(req, res);
 
     Promise.resolve(promiseObject).then(({ success }) => {
       if (success) res.redirect("/products");
-      else res.redirect("/login");
+      else res.redirect("/register");
     });
   });
 });

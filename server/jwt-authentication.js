@@ -82,11 +82,12 @@ const jwtLogin = async (req, res) => {
 
   if (!user) {
     res.status(401);
-    return res.json({ error: "Invalid email or password" });
+    // return res.json({ error: "Invalid email or password" });
+    return { success: false };
   }
 
   const accessToken = encodeToken({ userId: user.id });
-  return { accessToken };
+  return { accessToken, success: true };
 };
 
 module.exports = {

@@ -246,7 +246,13 @@ app.post("/register", (req, res) => {
 
     console.log("Query successfully executed: ", rows);
     userCount += 1;
-    return res.redirect("/products");
+
+    promiseObject = jwtAuthentication.jwtLogin(req, res);
+
+    Promise.resolve(promiseObject).then(({ success }) => {
+      if (success) res.redirect("/products");
+      else res.redirect("/login");
+    });
   });
 });
 

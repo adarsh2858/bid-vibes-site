@@ -58,6 +58,24 @@ export default class Comments extends React.Component {
     this.setState({ showCommentForm: !this.state.showCommentForm });
   }
 
+  async handleDeleteComment(id) {
+    try {
+      const response = await axios.delete(
+        `http://localhost:3000/delete-comment/${id}`
+      );
+      const { success } = response.data;
+
+      if (success) {
+        alert("Deleted successfully!");
+        this.fetchComments().then((response) => {
+          this.setState({ comments: response.data });
+        });
+      } else alert("Deletion was not successful.");
+    } catch (err) {
+      alert("Unauthorized");
+    }
+  }
+
   render() {
     return (
       <div className="text-left p-4 bg-info rounded mt-4">
@@ -78,10 +96,19 @@ export default class Comments extends React.Component {
 
         {this.state.comments.length > 0 ? (
           <div>
-            {this.state.comments.map(({ username, comment }, index) => (
-              <div key={username + index}>
+            {this.state.comments.map(({ username, comment, id }) => (
+              <div key={id}>
                 <h6>{username}</h6>
                 <p>{comment}</p>
+                <button
+                  className="btn btn-danger"
+                  onClick={() =>
+                    confirm(`Are you sure you want to delete this comment?`) &&
+                    this.handleDeleteComment(id)
+                  }
+                >
+                  Delete
+                </button>
               </div>
             ))}
           </div>

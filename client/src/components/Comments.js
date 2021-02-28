@@ -1,12 +1,14 @@
 import React from "react";
+import classnames from "classnames";
 import { Formik } from "formik";
 import axios from "axios";
 
 export default class Comments extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { comments: [] };
+    this.state = { comments: [], showCommentForm: false };
     this.handleFormSubmission = this.handleFormSubmission.bind(this);
+    this.handleNewComment = this.handleNewComment.bind(this);
   }
 
   componentDidMount() {
@@ -52,10 +54,23 @@ export default class Comments extends React.Component {
     }
   }
 
+  async handleNewComment() {
+    this.setState({ showCommentForm: !this.state.showCommentForm });
+  }
+
   render() {
     return (
-      <div className="text-left p-4">
-        <h1>Comments</h1>
+      <div className="text-left p-4 bg-info rounded">
+        <h3>Comments</h3>
+
+        <button
+          className={classnames("btn btn-success float-right", {
+            active: this.state.showCommentForm,
+          })}
+          onClick={this.handleNewComment}
+        >
+          Add New Comment
+        </button>
 
         {this.state.comments.length > 0 ? (
           <div>
@@ -68,40 +83,42 @@ export default class Comments extends React.Component {
           </div>
         ) : null}
 
-        <Formik
-          initialValues={{ username: "", comment: "" }}
-          onSubmit={this.handleFormSubmission}
-        >
-          {({ values, handleChange, isSubmitting, handleSubmit }) => (
-            <form onSubmit={handleSubmit}>
-              <label htmlFor="username">Username</label>
-              <input
-                className="form-control"
-                placeholder="Enter your username"
-                name="username"
-                type="text"
-                value={values.username || ""}
-                onChange={handleChange}
-              />
-              <label htmlFor="comment">Comment</label>
-              <input
-                className="form-control"
-                placeholder="Enter your comment"
-                name="comment"
-                type="text"
-                value={values.comment || ""}
-                onChange={handleChange}
-              />
-              <button
-                className="btn btn-success mt-4"
-                type="submit"
-                disabled={isSubmitting}
-              >
-                Submit
-              </button>
-            </form>
-          )}
-        </Formik>
+        {this.state.showCommentForm ? (
+          <Formik
+            initialValues={{ username: "", comment: "" }}
+            onSubmit={this.handleFormSubmission}
+          >
+            {({ values, handleChange, isSubmitting, handleSubmit }) => (
+              <form onSubmit={handleSubmit}>
+                <label htmlFor="username">Username</label>
+                <input
+                  className="form-control"
+                  placeholder="Enter your username"
+                  name="username"
+                  type="text"
+                  value={values.username || ""}
+                  onChange={handleChange}
+                />
+                <label htmlFor="comment">Comment</label>
+                <input
+                  className="form-control"
+                  placeholder="Enter your comment"
+                  name="comment"
+                  type="text"
+                  value={values.comment || ""}
+                  onChange={handleChange}
+                />
+                <button
+                  className="btn btn-success mt-4"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  Submit
+                </button>
+              </form>
+            )}
+          </Formik>
+        ) : null}
       </div>
     );
   }

@@ -28,6 +28,7 @@
     "@babel/preset-react": "^7.7.4",
     "axios": "^0.21.1",
     "babel-loader": "^8.0.6",
+    "classnames": "^2.2.6",
     "cloudinary": "^1.23.0",
     "connect-flash": "^0.1.1",
     "ejs": "^1.0.0",

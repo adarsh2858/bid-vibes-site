@@ -42,6 +42,7 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "regenerator-runtime": "^0.13.7",
+    "util": "^0.12.3",
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.11.0"

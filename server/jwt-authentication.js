@@ -1,20 +1,11 @@
 const njwt = require("njwt");
+const util = require("util");
 var { connection } = require("./index");
 
+// node native promisify
+const query = util.promisify(connection.query).bind(connection);
+
 let users = [];
-
-$query = `SELECT * FROM emp1`;
-
-connection.query($query, function (err, results) {
-  if (err) {
-    console.log("An error occurred  performing the query.");
-    return;
-  }
-
-  users = results;
-  // console.log("Query successfully executed: ", users);
-  // console.log("Query successfully executed: ", JSON.parse(JSON.stringify(results)));
-});
 
 const {
   APP_SECRET = "something really random",
@@ -75,6 +66,19 @@ async function isAuthenticatedMiddleware(req, res, next) {
 
 // This endpoint generates and returns a JWT access token given authentication data.
 const jwtLogin = async (req, res) => {
+  $query = `SELECT * FROM emp1`;
+
+  await (async() => {
+    try {
+      const rows = await query("SELECT * FROM emp1");
+      users = rows;
+    }
+    finally {
+      console.log("End the connection to database");
+      // connection.end();
+    }
+  })();
+
   const { username: email, password } = req.body;
   const user = users.find(
     (user) => user.first === email && user.last === password

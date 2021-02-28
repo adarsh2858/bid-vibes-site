@@ -24,9 +24,9 @@ app.post("/add-comment", async (req, res) => {
   // res.redirect('back');
 });
 
-app.get("/comments", async (req, res) => {
+app.get("/product/:id/comments", async (req, res) => {
   try {
-    const rows = await query("SELECT * from comments");
+    const rows = await query(`SELECT * from comments WHERE product_id = "${req.params.id}"`);
 
     res.json(rows);
 

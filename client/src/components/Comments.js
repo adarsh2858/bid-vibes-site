@@ -12,10 +12,10 @@ export default class Comments extends React.Component {
   componentDidMount() {
     this.fetchProductId().then((response) => {
       this.setState({ productId: response.data.productId });
-    });
 
-    this.fetchComments().then((response) => {
-      this.setState({ comments: response.data });
+      this.fetchComments().then((response) => {
+        this.setState({ comments: response.data });
+      });
     });
   }
 
@@ -28,7 +28,9 @@ export default class Comments extends React.Component {
   }
 
   async fetchComments() {
-    return await axios.get("http://localhost:3000/comments");
+    return await axios.get(
+      `http://localhost:3000/product/${this.state.productId}/comments`
+    );
   }
 
   async handleFormSubmission(values, { setSubmitting, resetForm }) {

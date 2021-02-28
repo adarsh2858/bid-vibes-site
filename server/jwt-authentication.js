@@ -1,17 +1,11 @@
 const njwt = require("njwt");
+const util = require("util");
+var { connection } = require("./index");
 
-const users = [
-  {
-    id: "1",
-    email: "adarsh",
-    password: "ash",
-  },
-  {
-    id: "2",
-    email: "adarshagarwal",
-    password: "adarsh",
-  },
-];
+// node native promisify
+const query = util.promisify(connection.query).bind(connection);
+
+let users = [];
 
 const {
   APP_SECRET = "something really random",
@@ -47,11 +41,7 @@ const jwtAuthenticationMiddleware = (req, res, next) => {
     const decoded = decodeToken(token);
     const { userId } = decoded;
 
-    console.log("decoded", decoded);
-    console.log("userId", userId);
-
     if (users.find((user) => user.id === userId)) {
-      console.log("found user!");
       req.userId = userId;
     }
   } catch (e) {
@@ -71,23 +61,37 @@ async function isAuthenticatedMiddleware(req, res, next) {
   // req.flash("error", "User not authenticated");
   // res.status(401);
   // res.json({ error: "User not authenticated" });
-  res.redirect('/products')
+  res.redirect("/products");
 }
 
 // This endpoint generates and returns a JWT access token given authentication data.
 const jwtLogin = async (req, res) => {
+  $query = `SELECT * FROM users`;
+
+  await (async() => {
+    try {
+      const rows = await query("SELECT * FROM users");
+      users = rows;
+    }
+    finally {
+      console.log("End the connection to database");
+      // connection.end();
+    }
+  })();
+
   const { username: email, password } = req.body;
   const user = users.find(
-    (user) => user.email === email && user.password === password
+    (user) => user.first === email && user.last === password
   );
 
   if (!user) {
     res.status(401);
-    return res.json({ error: "Invalid email or password" });
+    // return res.json({ error: "Invalid email or password" });
+    return { success: false };
   }
 
   const accessToken = encodeToken({ userId: user.id });
-  return { accessToken };
+  return { accessToken, success: true };
 };
 
 module.exports = {

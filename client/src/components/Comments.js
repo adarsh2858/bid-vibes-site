@@ -10,9 +10,9 @@ export default class Comments extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchProductId().then(response => {
-      this.setState({ productId: response.data.productId});
-    })
+    this.fetchProductId().then((response) => {
+      this.setState({ productId: response.data.productId });
+    });
 
     this.fetchComments().then((response) => {
       this.setState({ comments: response.data });
@@ -22,8 +22,8 @@ export default class Comments extends React.Component {
   async fetchProductId() {
     return await axios.get(window.location.href, {
       headers: {
-        Accept: "application/json"
-      }
+        Accept: "application/json",
+      },
     });
   }
 
@@ -33,19 +33,16 @@ export default class Comments extends React.Component {
 
   async handleFormSubmission(values, { setSubmitting, resetForm }) {
     // await new Promise((r) => setTimeout(r, 1000));
-    values['productId'] = this.state.productId;
+    values["productId"] = this.state.productId;
 
     try {
-      const response = await axios.post(
-        "http://localhost:3000/add-comment",
-        values
-      );
-
-      this.setState((prevState) => ({
-        comments: [...prevState.comments, response.data],
-      }));
+      await axios.post("http://localhost:3000/add-comment", values);
 
       setSubmitting(false);
+
+      this.fetchComments().then((response) => {
+        this.setState({ comments: response.data });
+      });
 
       resetForm({});
     } catch (error) {

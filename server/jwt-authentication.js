@@ -66,11 +66,11 @@ async function isAuthenticatedMiddleware(req, res, next) {
 
 // This endpoint generates and returns a JWT access token given authentication data.
 const jwtLogin = async (req, res) => {
-  $query = `SELECT * FROM emp1`;
+  $query = `SELECT * FROM users`;
 
   await (async() => {
     try {
-      const rows = await query("SELECT * FROM emp1");
+      const rows = await query("SELECT * FROM users");
       users = rows;
     }
     finally {

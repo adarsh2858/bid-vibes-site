@@ -220,7 +220,7 @@ app.get("/users", (req, res) => {
 });
 
 app.get("/register", (req, res) => {
-  $query = `SELECT COUNT(*) AS total FROM emp1`;
+  $query = `SELECT COUNT(*) AS total FROM users`;
 
   connection.query($query, function (err, rows, fields) {
     if (err) {
@@ -237,7 +237,7 @@ app.get("/register", (req, res) => {
 
 app.post("/register", (req, res) => {
   //perform a query
-  $query = `INSERT INTO emp1 values (${userCount + 1},20,'${
+  $query = `INSERT INTO users values (${userCount + 1},20,'${
     req.body.username
   }','${req.body.password}')`;
 

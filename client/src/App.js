@@ -5,6 +5,7 @@ import LikeButton from "./components/LikeButton";
 import NewProduct from "./components/NewProduct";
 import EditProduct from "./components/EditProduct";
 import AllProducts from "./components/AllProducts";
+import Comments from "./components/Comments";
 import "regenerator-runtime/runtime";
 
 class App extends React.Component {
@@ -48,4 +49,8 @@ if (document.getElementById("edit-product-container")) {
 
 if (document.getElementById("all-products")) {
   ReactDOM.render(<AllProducts />, document.getElementById("all-products"));
+}
+
+if (document.getElementById("comments")) {
+  ReactDOM.render(<Comments />, document.getElementById("comments"));
 }

@@ -1,32 +1,80 @@
 import React from "react";
 import { Formik } from "formik";
+import axios from "axios";
 
 export default class Comments extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { comments: [] };
+    this.handleFormSubmission = this.handleFormSubmission.bind(this);
+  }
+
+  componentDidMount() {
+    this.fetchComments().then((response) => {
+      this.setState({ comments: response.data });
+    });
+  }
+
+  async fetchComments() {
+    return await axios.get("http://localhost:3000/comments");
+  }
+
   async handleFormSubmission(values, { setSubmitting, resetForm }) {
-    console.log(JSON.stringify(values));
-    setSubmitting(false);
-    resetForm({});
+    // await new Promise((r) => setTimeout(r, 1000));
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/add-comment",
+        values
+      );
+
+      this.setState((prevState) => ({
+        comments: [...prevState.comments, response.data],
+      }));
+
+      console.log(this.state.comments);
+
+      setSubmitting(false);
+
+      resetForm({});
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   render() {
     return (
-      <div>
+      <div className="text-left p-4">
+        <h1>Comments</h1>
+
+        {this.state.comments.length > 0 ? (
+          <div>
+            {this.state.comments.map(({ username, comment }, index) => (
+              <div key={username + index}>
+                <div className="font-bold">{username}</div>
+                <div>{comment}</div>
+              </div>
+            ))}
+          </div>
+        ) : null}
+
         <Formik
           initialValues={{ username: "", comment: "" }}
           onSubmit={this.handleFormSubmission}
         >
           {({ values, handleChange, isSubmitting, handleSubmit }) => (
             <form onSubmit={handleSubmit}>
+              <label htmlFor="username">Username</label>
               <input
-                className="form-control m-2"
+                className="form-control"
                 placeholder="Enter your username"
                 name="username"
                 type="text"
                 value={values.username || ""}
                 onChange={handleChange}
               />
+              <label htmlFor="comment">Comment</label>
               <input
-                className="form-control m-2"
+                className="form-control"
                 placeholder="Enter your comment"
                 name="comment"
                 type="text"
@@ -34,7 +82,7 @@ export default class Comments extends React.Component {
                 onChange={handleChange}
               />
               <button
-                className="btn btn-success"
+                className="btn btn-success mt-4"
                 type="submit"
                 disabled={isSubmitting}
               >

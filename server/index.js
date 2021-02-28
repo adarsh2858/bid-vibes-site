@@ -86,6 +86,9 @@ app.use(jwtAuthentication.jwtAuthenticationMiddleware);
 app.set("views", path.join("client/public"));
 app.set("view engine", "ejs");
 
+exports.app = app;
+require("../controllers/comments");
+
 app.post("/jwt-login", jwtAuthentication.jwtLogin);
 
 app.get("/", (req, res) => {

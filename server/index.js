@@ -13,14 +13,38 @@ const cloudinary = require("cloudinary");
 const app = express();
 const { PORT = 3000 } = process.env;
 const path = require("path");
-const jwtAuthentication = require("./jwt-authentication");
 // const flash = require("connect-flash");
 // const session = require("express-session");
 
 const axios = require("axios");
 
-var userCount;
-let promiseObject = {};
+let userCount,
+  promiseObject = {};
+
+// get the mysql service
+const mysql = require("mysql");
+
+// add the credentials to access your database
+const connection = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: null,
+  database: "employee",
+  multipleStatements: true,
+});
+
+exports.connection = connection;
+
+const jwtAuthentication = require("./jwt-authentication");
+
+// connect to mysql
+connection.connect(function (err) {
+  // in case of error
+  if (err) {
+    console.log(err.code);
+    console.log(err.fatal);
+  }
+});
 
 cloudinary.config({
   cloud_name: "dj2xpmtn5",
@@ -44,12 +68,12 @@ app.use(express.static("client/public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // app.use(cors());
+
 app.use((req, res, next) => {
   Promise.resolve(promiseObject)
     .then(({ accessToken }) => {
       // if (accessToken) res.setHeader("Access-Token", accessToken);
       if (req) jwtAuthentication.setAccessToken(accessToken);
-      console.log(accessToken);
     })
     .catch((err) => {
       console.error(err);
@@ -59,41 +83,12 @@ app.use((req, res, next) => {
 });
 app.use(jwtAuthentication.jwtAuthenticationMiddleware);
 
-// get the mysql service
-var mysql = require("mysql");
-
-// add the credentials to access your database
-var connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: null,
-  database: "employee",
-  multipleStatements: true,
-});
-
-// connect to mysql
-connection.connect(function (err) {
-  // in case of error
-  if (err) {
-    console.log(err.code);
-    console.log(err.fatal);
-  }
-});
-
-$query = `SELECT COUNT(*) AS total FROM emp1`;
-
-connection.query($query, function (err, rows, fields) {
-  if (err) {
-    console.log("An error occurred  performing the query.");
-    return;
-  }
-
-  console.log("Query successfully executed: ", rows[0].total);
-  userCount = rows[0].total;
-});
-
 app.set("views", path.join("client/public"));
 app.set("view engine", "ejs");
+
+exports.app = app;
+exports.isAuthenticatedMiddleware = jwtAuthentication.isAuthenticatedMiddleware;
+require("../controllers/comments");
 
 app.post("/jwt-login", jwtAuthentication.jwtLogin);
 
@@ -143,33 +138,45 @@ app.post(
   }
 );
 
-app.get("/products/:id/edit", (req, res) => {
-  res.sendFile("edit_product.html", { root: "client/public" });
-});
+app.get(
+  "/products/:id/edit",
+  jwtAuthentication.isAuthenticatedMiddleware,
+  (req, res) => {
+    res.sendFile("edit_product.html", { root: "client/public" });
+  }
+);
 
-app.get("/products/:id/editInfo", (req, res) => {
-  connection.query(
-    "SELECT * FROM products WHERE id = ?",
-    [req.params.id],
-    (error, results, fields) => {
-      if (error) console.log("ERROR while editing - " + error);
-      res.send(results[0]);
-    }
-  );
-});
+app.get(
+  "/products/:id/editInfo",
+  jwtAuthentication.isAuthenticatedMiddleware,
+  (req, res) => {
+    connection.query(
+      "SELECT * FROM products WHERE id = ?",
+      [req.params.id],
+      (error, results, fields) => {
+        if (error) console.log("ERROR while editing - " + error);
+        res.send(results[0]);
+      }
+    );
+  }
+);
 
-app.post("/products/:id/edit", (req, res) => {
-  $query = `UPDATE products SET name = '${req.body.name}', 
+app.post(
+  "/products/:id/edit",
+  jwtAuthentication.isAuthenticatedMiddleware,
+  (req, res) => {
+    $query = `UPDATE products SET name = '${req.body.name}', 
     description = '${req.body.description}',
     image = '${req.body.image}' WHERE ID = '${req.params.id}'`;
 
-  connection.query($query, (err) => {
-    if (err) {
-      console.log("ERROR while editing - " + err);
-    }
-  });
-  return res.redirect("/products");
-});
+    connection.query($query, (err) => {
+      if (err) {
+        console.log("ERROR while editing - " + err);
+      }
+    });
+    return res.redirect("/products");
+  }
+);
 
 app.post("/image-upload", (req, res) => {
   cloudinary.uploader.upload(req.files.myFile.path).then((image) => {
@@ -177,20 +184,26 @@ app.post("/image-upload", (req, res) => {
   });
 });
 
-app.get("/products/:id/delete", (req, res) => {
-  $query = `DELETE FROM products WHERE ID = ${req.params.id}`;
+app.get(
+  "/products/:id/delete",
+  jwtAuthentication.isAuthenticatedMiddleware,
+  (req, res) => {
+    $query = `DELETE FROM products WHERE ID = ${req.params.id}`;
 
-  connection.query($query, (err) => {
-    if (err) {
-      console.log("ERROR while deleting - " + err);
-    }
-  });
+    connection.query($query, (err) => {
+      if (err) {
+        console.log("ERROR while deleting - " + err);
+      }
+    });
 
-  return res.redirect("/products");
-});
+    return res.redirect("/products");
+  }
+);
 
 app.get("/products/:id/show", (req, res) => {
-  console.log("SHOW PAGE = " + req.params.id);
+  if (req.header("accept") == "application/json")
+    return res.json({ productId: req.params.id });
+
   connection.query(
     "SELECT * FROM products WHERE id = ?",
     [req.params.id],
@@ -210,12 +223,24 @@ app.get("/users", (req, res) => {
 });
 
 app.get("/register", (req, res) => {
+  $query = `SELECT COUNT(*) AS total FROM users`;
+
+  connection.query($query, function (err, rows, fields) {
+    if (err) {
+      console.log("An error occurred  performing the query.");
+      return;
+    }
+
+    console.log("Query successfully executed: ", rows[0].total);
+    userCount = rows[0].total;
+  });
+
   res.sendFile("register.html", { root: "client/public" });
 });
 
 app.post("/register", (req, res) => {
   //perform a query
-  $query = `INSERT INTO emp1 values (${userCount + 1},20,'${
+  $query = `INSERT INTO users values (${userCount + 1},20,'${
     req.body.username
   }','${req.body.password}')`;
 
@@ -226,8 +251,13 @@ app.post("/register", (req, res) => {
     }
 
     console.log("Query successfully executed: ", rows);
-    userCount += 1;
-    return res.redirect("/products");
+
+    promiseObject = jwtAuthentication.jwtLogin(req, res);
+
+    Promise.resolve(promiseObject).then(({ success }) => {
+      if (success) res.redirect("/products");
+      else res.redirect("/register");
+    });
   });
 });
 
@@ -236,28 +266,15 @@ app.get("/login", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  console.log(req.body);
-  $query = `SELECT COUNT(*) as found FROM emp1 WHERE first = '${req.body.username}' and last = '${req.body.password}'`;
+  promiseObject = jwtAuthentication.jwtLogin(req, res);
 
-  connection.query($query, function (err, rows, fields) {
-    if (err) {
-      console.log("An error occurred performing the query.");
-      return res.redirect("/login");
-    }
-
-    console.log("Query successfully executed: ", rows);
-
-    if (rows[0].found == 0) {
-      return res.redirect("/login");
-    }
-    // Set an access token using jwt after a successful search in the database
-    promiseObject = jwtAuthentication.jwtLogin(req, res);
-
-    return res.redirect("/products");
+  Promise.resolve(promiseObject).then(({ success }) => {
+    if (success) res.redirect("/products");
+    else res.redirect("/login");
   });
 });
 
-app.get("/close", (req, res) => {
+app.get("/close", jwtAuthentication.isAuthenticatedMiddleware, (req, res) => {
   // Close the connection with database
   connection.end(function () {
     // the connection has been closed

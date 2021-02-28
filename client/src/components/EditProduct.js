@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 const EditProduct = () => {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [uploadedImage, setUploadedImage] = useState(null);
+  const [uploadedImage, setUploadedImage] = useState({ secure_url: "" });
   const [loadedProduct, setLoadedProduct] = useState(null);
 
   useEffect(() => {
@@ -10,6 +10,9 @@ const EditProduct = () => {
       const productInfo = await fetch(window.location.href + "Info");
       const product = await productInfo.json();
       setLoadedProduct(product);
+
+      const image = { secure_url: product.image || "" };
+      setUploadedImage(image);
     };
     loadProduct();
   }, []);
@@ -35,13 +38,22 @@ const EditProduct = () => {
     if (selectedFile) onFileUpload();
   }, [selectedFile]);
 
+  const handleChange = (event) => {
+    setUploadedImage({ secure_url: event.target.value });
+  };
+
   return (
     <div className="p-4">
       {loadedProduct && (
         <form action="edit" method="POST">
           <div className="form-group">
             <label>Name</label>
-            <input className="form-control" type="text" name="name" defaultValue={loadedProduct.name} />
+            <input
+              className="form-control"
+              type="text"
+              name="name"
+              defaultValue={loadedProduct.name}
+            />
           </div>
           <label>Description</label>
           <div className="form-group">
@@ -54,16 +66,13 @@ const EditProduct = () => {
           </div>
           <div className="form-group">
             <input type="file" onChange={onFileChange} />
-            {!uploadedImage ? (
-              <input name="image" type="text" placeholder="Image URL" />
-            ) : (
-              <input
-                name="image"
-                type="text"
-                value={uploadedImage.secure_url}
-                placeholder="Image URL"
-              />
-            )}
+            <input
+              name="image"
+              type="text"
+              value={uploadedImage.secure_url}
+              onChange={handleChange}
+              placeholder="Image URL"
+            />
             {uploadedImage && (
               <img
                 className="img-fluid"

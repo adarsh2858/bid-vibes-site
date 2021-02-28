@@ -25,30 +25,30 @@ if (document.getElementById("login_container")) {
   ReactDOM.render(<Login />, document.getElementById("login_container"));
 }
 
-if (document.getElementById("like_button_container")) {
+if (document.getElementById("like-button-container")) {
   ReactDOM.render(
     <LikeButton />,
-    document.getElementById("like_button_container")
+    document.getElementById("like-button-container")
   );
 }
 
-if (document.getElementById("new_product_container")) {
+if (document.getElementById("new-product-container")) {
   ReactDOM.render(
     <NewProduct />,
-    document.getElementById("new_product_container")
+    document.getElementById("new-product-container")
   );
 }
 
-if (document.getElementById("edit_product_container")) {
+if (document.getElementById("edit-product-container")) {
   ReactDOM.render(
     // <EditProduct name={currentName} description={currentDescription} />,
     <EditProduct />,
-    document.getElementById("edit_product_container")
+    document.getElementById("edit-product-container")
   );
 }
 
-if (document.getElementById("all_products")) {
-  ReactDOM.render(<AllProducts />, document.getElementById("all_products"));
+if (document.getElementById("all-products")) {
+  ReactDOM.render(<AllProducts />, document.getElementById("all-products"));
 }
 
 if (document.getElementById("comments")) {

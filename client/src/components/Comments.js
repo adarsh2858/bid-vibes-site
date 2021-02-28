@@ -60,24 +60,28 @@ export default class Comments extends React.Component {
 
   render() {
     return (
-      <div className="text-left p-4 bg-info rounded">
-        <h3>Comments</h3>
+      <div className="text-left p-4 bg-info rounded mt-4">
+        <div className="d-flex justify-content-between">
+          <h3>Comments</h3>
 
-        <button
-          className={classnames("btn btn-success float-right", {
-            active: this.state.showCommentForm,
-          })}
-          onClick={this.handleNewComment}
-        >
-          Add New Comment
-        </button>
+          <button
+            className={classnames("btn btn-success float-right", {
+              active: this.state.showCommentForm,
+            })}
+            onClick={this.handleNewComment}
+          >
+            Add New Comment
+          </button>
+        </div>
+
+        <hr />
 
         {this.state.comments.length > 0 ? (
           <div>
             {this.state.comments.map(({ username, comment }, index) => (
               <div key={username + index}>
-                <div className="font-bold">{username}</div>
-                <div>{comment}</div>
+                <h6>{username}</h6>
+                <p>{comment}</p>
               </div>
             ))}
           </div>

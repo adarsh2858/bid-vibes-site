@@ -200,7 +200,9 @@ app.get(
 );
 
 app.get("/products/:id/show", (req, res) => {
-  console.log("SHOW PAGE = " + req.params.id);
+  if (req.header("accept") == "application/json")
+    return res.json({ productId: req.params.id });
+
   connection.query(
     "SELECT * FROM products WHERE id = ?",
     [req.params.id],

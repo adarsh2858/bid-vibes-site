@@ -15,21 +15,29 @@ const AllUsers = () => {
   };
 
   return (
-    <div>
+    <div className="p-3">
       <h1>ALL USERS</h1>
       <button onClick={fetchUsers}>Fetch Users</button>
-      {users
-        ? users.map((user) => {
-            return (
-              <div>
-                <h1>
-                  {user.first}&nbsp;{user.last}
-                </h1>
-                <div>{user.age}</div>
-              </div>
-            );
-          })
-        : null}
+      {users ? (
+        <div className="">
+          <table className="table-headers">
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Age</th>
+            </tr>
+            {users.map(({ id, first, last, age }) => {
+              return (
+                <tr className="bg-light m-2 p-2" key={id}>
+                  <td className="text-capitalize">{first}</td>
+                  <td>{last}</td>
+                  <td>{age}</td>
+                </tr>
+              );
+            })}
+          </table>
+        </div>
+      ) : null}
     </div>
   );
 };

@@ -46,6 +46,7 @@
     "util": "^0.12.3",
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.11.0"
+    "webpack-dev-server": "^3.11.0",
+    "ssri": ">=8.0.1"
   }
 }

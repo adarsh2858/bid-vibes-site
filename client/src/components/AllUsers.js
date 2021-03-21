@@ -14,44 +14,61 @@ const AllUsers = () => {
     setUsers(usersList.data);
   };
 
-  useEffect(() => fetchUsers(), []);
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   return (
     <div className="p-3">
       <h1>ALL USERS</h1>
       <button onClick={fetchUsers}>Fetch Latest Users</button>
       {users.length > 0 ? (
-        <table
-          className="m-4"
-          id="users-table"
-          style={{ width: "75%", height: screen.height }}
-        >
-          <thead>
-            <tr>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Age</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map(({ id, first, last, age }) => {
-              return (
-                <tr key={id}>
-                  <td className="text-capitalize">{first}</td>
-                  <td>{last}</td>
-                  <td>{age}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-          {/* <tfoot>
-            <tr>
-              <td>Total Entries</td>
-              <td>1</td>
-              <td>2</td>
-            </tr>
-          </tfoot> */}
-        </table>
+        <div>
+          <table
+            className="m-4"
+            id="users-table"
+            style={{ width: "75%", height: screen.height }}
+          >
+            <thead>
+              <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Age</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map(({ id, first, last, age }) => {
+                return (
+                  <tr key={id}>
+                    <td className="text-capitalize">{first}</td>
+                    <td>{last}</td>
+                    <td>{age}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          <div className="d-flex">
+            <a href="#" className="p-2 m-2">
+              &laquo;
+            </a>
+            <a href="#" className="bg-success text-danger p-2 m-2">
+              1
+            </a>
+            <a href="#" className="p-2 m-2">
+              2
+            </a>
+            <a href="#" className="p-2 m-2">
+              3
+            </a>
+            <a href="#" className="p-2 m-2">
+              4
+            </a>
+            <a href="#" className="p-2 m-2">
+              &raquo;
+            </a>
+          </div>
+        </div>
       ) : null}
     </div>
   );

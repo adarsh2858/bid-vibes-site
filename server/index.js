@@ -101,15 +101,24 @@ app.get("/products", (req, res) => {
 });
 
 app.get("/all-products", (req, res) => {
-  connection.query(
-    `create table if not exists products (id INT(6) unsigned auto_increment primary key,
-    name varchar(20) not null, description varchar(30) not null, image text); 
-    SELECT * FROM products;`,
-    function (err, rows, fields) {
-      if (err) throw err;
-      res.send(rows[1]);
-    }
-  );
+  try {
+    connection.query(
+      `create table if not exists products (id INT(6) unsigned auto_increment primary key,
+        name varchar(20) not null, description varchar(30) not null, image text); 
+        SELECT * FROM products;`,
+      function (err, rows) {
+        if (err) {
+          console.error(err);
+          // throw err;
+        } else {
+          res.send(rows[1]);
+        }
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    return;
+  }
 });
 
 app.get(

@@ -5,6 +5,7 @@ import LikeButton from "./components/LikeButton";
 import NewProduct from "./components/NewProduct";
 import EditProduct from "./components/EditProduct";
 import AllProducts from "./components/AllProducts";
+import AllUsers from "./components/AllUsers";
 import Comments from "./components/Comments";
 import "regenerator-runtime/runtime";
 
@@ -53,4 +54,8 @@ if (document.getElementById("all_products")) {
 
 if (document.getElementById("comments")) {
   ReactDOM.render(<Comments />, document.getElementById("comments"));
+}
+
+if (document.getElementById("all-users")) {
+  ReactDOM.render(<AllUsers />, document.getElementById("all-users"));
 }

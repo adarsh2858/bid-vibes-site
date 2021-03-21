@@ -231,6 +231,21 @@ app.get("/users", (req, res) => {
   });
 });
 
+app.get("/all-users", (req, res) => {
+  $query = `SELECT * FROM users`;
+
+  if (req.header("accept") != "application/json")
+    return res.sendFile("all_users.html", { root: "client/public" });
+
+  connection.query($query, (err, rows) => {
+    if (err) {
+      console.error(err);
+    } else {
+      res.send(rows);
+    }
+  });
+});
+
 app.get("/register", (req, res) => {
   $query = `SELECT COUNT(*) AS total FROM users`;
 

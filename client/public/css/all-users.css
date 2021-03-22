@@ -1,3 +1,7 @@
 a:hover {
-  color: blue;
+  background-color: blue;
+}
+
+button:hover {
+  background-color: blue;
 }

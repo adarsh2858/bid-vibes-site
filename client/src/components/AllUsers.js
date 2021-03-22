@@ -1,8 +1,16 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import classnames from "classnames";
+import "../../public/css/all-users.css";
 
 const AllUsers = () => {
   const [users, setUsers] = useState([]);
+  const [hoverEffect, setHoverEffect] = useState(false);
+
+  const paginationButtonsClassnames = classnames(
+    "p-2 m-2 text-decoration-none",
+    { "bg-primary": hoverEffect, "text-white": hoverEffect }
+  );
 
   const fetchUsers = async () => {
     let usersList = await axios.get("/all-users", {
@@ -49,22 +57,32 @@ const AllUsers = () => {
             </tbody>
           </table>
           <div className="d-flex">
-            <a href="#" className="p-2 m-2">
+            <a href="#" className={paginationButtonsClassnames}>
               &laquo;
             </a>
-            <a href="#" className="bg-success text-danger p-2 m-2">
+            <a href="#" className={paginationButtonsClassnames} style={{cursor: "pointer"}}>
               1
             </a>
-            <a href="#" className="p-2 m-2">
+            <a
+              href="#"
+              onMouseEnter={() => setHoverEffect(true)}
+              onMouseLeave={() => setHoverEffect(false)}
+              className={paginationButtonsClassnames}
+            >
               2
             </a>
-            <a href="#" className="p-2 m-2">
+            <a
+              href="#"
+              onMouseEnter={() => setHoverEffect(true)}
+              onMouseLeave={() => setHoverEffect(false)}
+              className={paginationButtonsClassnames}
+            >
               3
             </a>
-            <a href="#" className="p-2 m-2">
+            <a href="#" className={paginationButtonsClassnames}>
               4
             </a>
-            <a href="#" className="p-2 m-2">
+            <a href="#" className={paginationButtonsClassnames}>
               &raquo;
             </a>
           </div>

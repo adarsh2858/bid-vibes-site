@@ -18,7 +18,7 @@ const AllUsers = () => {
     "p-2 m-2 text-decoration-none",
     {
       // "bg-primary": hoverEffect,
-      "text-white": hoverEffect,
+      // "text-white": hoverEffect,
     }
   );
 
@@ -113,18 +113,18 @@ const AllUsers = () => {
             >
               2
             </button>
-            <a
-              href="#"
+            <button
+              disabled
               onMouseEnter={() => setHoverEffect(true)}
               onMouseLeave={() => setHoverEffect(false)}
               className={paginationButtonsClassnames}
             >
               3
-            </a>
+            </button>
             <a
               href="#"
-              onMouseEnter={() => setHoverEffect(true)}
-              onMouseLeave={() => setHoverEffect(false)}
+              // onMouseEnter={() => setHoverEffect(true)}
+              // onMouseLeave={() => setHoverEffect(false)}
               className={paginationButtonsClassnames}
             >
               &raquo;

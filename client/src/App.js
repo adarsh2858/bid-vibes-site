@@ -7,13 +7,15 @@ import EditProduct from "./components/EditProduct";
 import AllProducts from "./components/AllProducts";
 import AllUsers from "./components/AllUsers";
 import Comments from "./components/Comments";
+import TopNavBar from "./components/TopNavBar";
 import "regenerator-runtime/runtime";
 
 class App extends React.Component {
   render() {
     return (
       <div>
-        <h1>Welcome to Adarsh Products!</h1>
+        <TopNavBar />
+        {/* <h1>Welcome to Adarsh Products1!</h1> */}
       </div>
     );
   }

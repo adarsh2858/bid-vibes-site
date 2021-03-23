@@ -9,12 +9,25 @@ import AllUsers from "./components/AllUsers";
 import Comments from "./components/Comments";
 import TopNavBar from "./components/TopNavBar";
 import "regenerator-runtime/runtime";
+import axios from "axios";
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { isUserLoggedIn: false };
+  }
+
+  componentDidMount() {
+    axios.get("/user-logged-in").then((response) => {
+      const { data } = response;
+      this.setState({ isUserLoggedIn: data.loggedIn });
+    });
+  }
+
   render() {
     return (
       <div>
-        <TopNavBar />
+        <TopNavBar isUserLoggedIn={this.state.isUserLoggedIn} />
         {/* <h1>Welcome to Adarsh Products1!</h1> */}
       </div>
     );

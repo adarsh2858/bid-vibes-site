@@ -100,6 +100,10 @@ app.get("/products", (req, res) => {
   res.sendFile("all_products.html", { root: "client/public" });
 });
 
+app.get("/user-logged-in", (req, res) => {
+  res.json({ loggedIn: jwtAuthentication.isUserAuthenticated(req) });
+});
+
 app.get("/all-products", (req, res) => {
   try {
     connection.query(

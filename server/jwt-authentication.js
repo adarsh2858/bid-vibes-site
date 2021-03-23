@@ -68,12 +68,11 @@ async function isAuthenticatedMiddleware(req, res, next) {
 const jwtLogin = async (req, res) => {
   $query = `SELECT * FROM users`;
 
-  await (async() => {
+  await (async () => {
     try {
       const rows = await query("SELECT * FROM users");
       users = rows;
-    }
-    finally {
+    } finally {
       console.log("End the connection to database");
       // connection.end();
     }
@@ -94,9 +93,15 @@ const jwtLogin = async (req, res) => {
   return { accessToken, success: true };
 };
 
+const isUserAuthenticated = (req) => {
+  if (req.userId) return true;
+  else return false;
+};
+
 module.exports = {
   jwtAuthenticationMiddleware,
   isAuthenticatedMiddleware,
   jwtLogin,
   setAccessToken,
+  isUserAuthenticated,
 };

@@ -297,8 +297,13 @@ app.post("/login", (req, res) => {
   promiseObject = jwtAuthentication.jwtLogin(req, res);
 
   Promise.resolve(promiseObject).then(({ success }) => {
-    if (success) res.redirect("/products");
-    else res.redirect("/login");
+    if (success) {
+      res.json({ message: "Logged In Successfully.", redirectTo: "/products" });
+      // res.redirect("/products");
+    } else {
+      res.json({ message: "Invalid credentials", redirectTo: "/login" });
+      // res.redirect("/login");
+    }
   });
 });
 

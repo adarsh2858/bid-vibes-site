@@ -51,5 +51,7 @@
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.11.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "react-toastify": "^7.0.3"
+  }
 }

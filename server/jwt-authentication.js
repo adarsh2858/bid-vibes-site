@@ -59,9 +59,9 @@ async function isAuthenticatedMiddleware(req, res, next) {
   }
 
   // req.flash("error", "User not authenticated");
-  // res.status(401);
-  // res.json({ error: "User not authenticated" });
-  res.redirect("/products");
+  res.status(401);
+  res.json({ error: "You need to login to do that.", redirectTo: "/products" });
+  // res.redirect("/products");
 }
 
 // This endpoint generates and returns a JWT access token given authentication data.

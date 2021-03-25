@@ -17,6 +17,30 @@ const AllProducts = () => {
     }
   };
 
+  const handleEditButtonClick = async (productId) => {
+    try {
+      const response = await axios.get(`/products/${productId}/edit`);
+
+      if (response.status === 200)
+        window.location = `/products/${productId}/edit`;
+    } catch (err) {
+      toast.error(err.response.data.error);
+    }
+  };
+
+  const handleDeleteButtonClick = async (productId) => {
+    try {
+      if (confirm("Are you sure?")) {
+        const response = await axios.get(`/products/${productId}/delete`);
+
+        if (response.status === 200)
+          window.location = `/products/${productId}/delete`;
+      }
+    } catch (err) {
+      toast.error(err.response.data.error);
+    }
+  };
+
   useEffect(() => {
     fetch("http://localhost:3000/all-products")
       .then((response) => {
@@ -76,37 +100,13 @@ const AllProducts = () => {
                     <div className="d-flex justify-content-around">
                       <button
                         className="btn btn-success px-5"
-                        onClick={async () => {
-                          try {
-                            const response = await axios.get(
-                              `/products/${product.id}/edit`
-                            );
-
-                            if (response.status === 200)
-                              window.location = `/products/${product.id}/edit`;
-                          } catch (err) {
-                            toast.error(err.response.data.error);
-                          }
-                        }}
+                        onClick={() => handleEditButtonClick(product.id)}
                       >
                         <img width="24" src="images/icon_edit.png" />
                       </button>
                       <button
                         className="btn btn-danger px-5"
-                        onClick={async () => {
-                          try {
-                            if (confirm("Are you sure?")) {
-                              const response = await axios.get(
-                                `/products/${product.id}/delete`
-                              );
-
-                              if (response.status === 200)
-                                window.location = `/products/${product.id}/delete`;
-                            }
-                          } catch (err) {
-                            toast.error(err.response.data.error);
-                          }
-                        }}
+                        onClick={() => handleDeleteButtonClick(product.id)}
                       >
                         <img width="24" src="images/icon_delete.png" />
                       </button>

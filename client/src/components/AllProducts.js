@@ -76,9 +76,18 @@ const AllProducts = () => {
                     <div className="d-flex justify-content-around">
                       <button
                         className="btn btn-success px-5"
-                        onClick={() =>
-                          (window.location = `/products/${product.id}/edit`)
-                        }
+                        onClick={async () => {
+                          try {
+                            const response = await axios.get(
+                              `/products/${product.id}/edit`
+                            );
+
+                            if (response.status === 200)
+                              window.location = `/products/${product.id}/edit`;
+                          } catch (err) {
+                            toast.error(err.response.data.error);
+                          }
+                        }}
                       >
                         <img width="24" src="images/icon_edit.png" />
                       </button>

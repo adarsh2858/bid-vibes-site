@@ -1,5 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import reducer from "./store/reducer";
+import { createStore } from "redux";
+import { Provider } from "react-redux";
 import Login from "./components/Login";
 import LikeButton from "./components/LikeButton";
 import NewProduct from "./components/NewProduct";
@@ -10,6 +13,8 @@ import Comments from "./components/Comments";
 import TopNavBar from "./components/TopNavBar";
 import "regenerator-runtime/runtime";
 import axios from "axios";
+
+const store = createStore(reducer);
 
 class App extends React.Component {
   constructor(props) {
@@ -35,10 +40,20 @@ class App extends React.Component {
 }
 
 if (document.getElementById("root")) {
-  ReactDOM.render(<App />, document.getElementById("root"));
+  ReactDOM.render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.getElementById("root")
+  );
 }
 if (document.getElementById("login_container")) {
-  ReactDOM.render(<Login />, document.getElementById("login_container"));
+  ReactDOM.render(
+    <Provider {...{ store }}>
+      <Login />
+    </Provider>,
+    document.getElementById("login_container")
+  );
 }
 
 if (document.getElementById("like_button_container")) {

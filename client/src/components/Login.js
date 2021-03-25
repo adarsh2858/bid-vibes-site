@@ -1,9 +1,12 @@
 import React from "react";
+import axios from "axios";
+import { connect } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import { Formik, Form, Field } from "formik";
-import axios from "axios";
 
-const Login = () => {
+const Login = (props) => {
+  console.log(props.showLoggedInInfo);
+  console.log(props.showCounterValue);
   const submitLoginForm = async (values) => {
     // await new Promise((r) => setTimeout(r, 2000));
     try {
@@ -70,8 +73,22 @@ const Login = () => {
           </Form>
         )}
       </Formik>
+      <button onClick={props.onIncrementCounter}>Increment Counter</button>
     </div>
   );
 };
 
-export default Login;
+const mapStateToProps = (state) => {
+  return {
+    showLoggedInInfo: state.isUserLoggedIn,
+    showCounterValue: state.counter
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onIncrementCounter: () => dispatch({ type: "INCREMENT" }),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

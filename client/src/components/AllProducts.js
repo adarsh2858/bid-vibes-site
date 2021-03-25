@@ -93,10 +93,20 @@ const AllProducts = () => {
                       </button>
                       <button
                         className="btn btn-danger px-5"
-                        onClick={() =>
-                          confirm("Are you sure?") &&
-                          (window.location = `/products/${product.id}/delete`)
-                        }
+                        onClick={async () => {
+                          try {
+                            if (confirm("Are you sure?")) {
+                              const response = await axios.get(
+                                `/products/${product.id}/delete`
+                              );
+
+                              if (response.status === 200)
+                                window.location = `/products/${product.id}/delete`;
+                            }
+                          } catch (err) {
+                            toast.error(err.response.data.error);
+                          }
+                        }}
                       >
                         <img width="24" src="images/icon_delete.png" />
                       </button>

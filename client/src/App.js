@@ -13,6 +13,7 @@ import AllUsers from "./components/AllUsers";
 import Comments from "./components/Comments";
 import TopNavBar from "./components/TopNavBar";
 import ReduxComponent from "./components/ReduxComponent";
+import NavBar from "./components/NavBar";
 import "regenerator-runtime/runtime";
 
 const { store, persistor: newPersistor } = defaultImport();
@@ -34,6 +35,7 @@ class App extends React.Component {
     return (
       <div>
         <TopNavBar isUserLoggedIn={this.state.isUserLoggedIn} />
+        <NavBar />
         {/* <h1>Welcome to Adarsh Products1!</h1> */}
       </div>
     );

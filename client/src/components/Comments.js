@@ -2,6 +2,7 @@ import React from "react";
 import classnames from "classnames";
 import { Formik } from "formik";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
 
 export default class Comments extends React.Component {
   constructor(props) {
@@ -45,6 +46,7 @@ export default class Comments extends React.Component {
       setSubmitting(false);
 
       this.fetchComments().then((response) => {
+        toast.success("Added successfully.");
         this.setState({ comments: response.data });
       });
 
@@ -66,19 +68,27 @@ export default class Comments extends React.Component {
       const { success } = response.data;
 
       if (success) {
-        alert("Deleted successfully!");
+        toast.success("Deleted successfully!");
         this.fetchComments().then((response) => {
           this.setState({ comments: response.data });
         });
-      } else alert("Deletion was not successful.");
+      } else toast.error("Deletion was not successful.");
     } catch (err) {
-      alert("Unauthorized");
+      const {
+        response: {
+          data: { error: errorMessage },
+        },
+      } = err;
+
+      toast.error(errorMessage);
+      // alert("Unauthorized");
     }
   }
 
   render() {
     return (
-      <div className="text-left p-4 bg-info rounded mt-4">
+      <div style={{background: "#E8CEBF"}} className={classnames("text-left p-4 rounded mt-4",{"bg-info": false})}>
+        <ToastContainer />
         <div className="d-flex justify-content-between">
           <h3>Comments</h3>
 
@@ -140,7 +150,7 @@ export default class Comments extends React.Component {
                   onChange={handleChange}
                 />
                 <button
-                  className="btn btn-success mt-4"
+                  className="btn btn-primary mt-4"
                   type="submit"
                   disabled={isSubmitting}
                 >

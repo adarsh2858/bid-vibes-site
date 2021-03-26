@@ -73,7 +73,7 @@ const Login = (props) => {
           </Form>
         )}
       </Formik>
-      <button onClick={props.onIncrementCounter}>Increment Counter</button>
+      {/* <button onClick={props.onIncrementCounter}>Increment Counter</button> */}
     </div>
   );
 };

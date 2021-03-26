@@ -1,8 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import reducer from "./store/reducer";
-import { createStore } from "redux";
+import axios from "axios";
 import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import defaultImport from "./store/configureStore";
 import Login from "./components/Login";
 import LikeButton from "./components/LikeButton";
 import NewProduct from "./components/NewProduct";
@@ -13,9 +14,8 @@ import Comments from "./components/Comments";
 import TopNavBar from "./components/TopNavBar";
 import ReduxComponent from "./components/ReduxComponent";
 import "regenerator-runtime/runtime";
-import axios from "axios";
 
-const store = createStore(reducer);
+const { store, persistor: newPersistor } = defaultImport();
 
 class App extends React.Component {
   constructor(props) {
@@ -42,8 +42,10 @@ class App extends React.Component {
 
 if (document.getElementById("root")) {
   ReactDOM.render(
-    <Provider store={store}>
-      <App />
+    <Provider {...{ store }}>
+      <PersistGate loading={null} persistor={newPersistor}>
+        <App />
+      </PersistGate>
     </Provider>,
     document.getElementById("root")
   );
@@ -51,7 +53,9 @@ if (document.getElementById("root")) {
 if (document.getElementById("login_container")) {
   ReactDOM.render(
     <Provider {...{ store }}>
-      <Login />
+      <PersistGate loading={null} persistor={newPersistor}>
+        <Login />
+      </PersistGate>
     </Provider>,
     document.getElementById("login_container")
   );
@@ -94,7 +98,9 @@ if (document.getElementById("all-users")) {
 if (document.getElementById("redux-container"))
   ReactDOM.render(
     <Provider {...{ store }}>
-      <ReduxComponent />
+      <PersistGate loading={null} persistor={newPersistor}>
+        <ReduxComponent />
+      </PersistGate>
     </Provider>,
     document.getElementById("redux-container")
   );

@@ -11,6 +11,7 @@ import AllProducts from "./components/AllProducts";
 import AllUsers from "./components/AllUsers";
 import Comments from "./components/Comments";
 import TopNavBar from "./components/TopNavBar";
+import ReduxComponent from "./components/ReduxComponent";
 import "regenerator-runtime/runtime";
 import axios from "axios";
 
@@ -89,3 +90,11 @@ if (document.getElementById("comments")) {
 if (document.getElementById("all-users")) {
   ReactDOM.render(<AllUsers />, document.getElementById("all-users"));
 }
+
+if (document.getElementById("redux-container"))
+  ReactDOM.render(
+    <Provider {...{ store }}>
+      <ReduxComponent />
+    </Provider>,
+    document.getElementById("redux-container")
+  );

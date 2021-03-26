@@ -1,10 +1,11 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const AllProducts = () => {
   const [productsList, setProductsList] = useState([]);
+  const bannerRef = useRef(null);
 
   const handleAddNewProductButtonClick = async () => {
     try {
@@ -58,10 +59,10 @@ const AllProducts = () => {
     <div className="container">
       <ToastContainer />
 
-      <div className="p-5 my-4">
+      <div id="banner" ref={bannerRef} className="p-5 my-4">
         <h1>Welcome to Adarsh Products!</h1>
         <button
-          className="btn btn-primary mt-3"
+          className="btn btn-dark mt-3"
           onClick={handleAddNewProductButtonClick}
         >
           Add New Product
@@ -90,7 +91,7 @@ const AllProducts = () => {
                   </div>
                   <div>
                     <button
-                      className="btn btn-primary form-control mb-2"
+                      className="btn btn-info form-control mb-2"
                       onClick={() =>
                         (window.location = `/products/${product.id}/show`)
                       }
@@ -99,7 +100,7 @@ const AllProducts = () => {
                     </button>
                     <div className="d-flex justify-content-around">
                       <button
-                        className="btn btn-success px-5"
+                        className="btn btn-warning px-5"
                         onClick={() => handleEditButtonClick(product.id)}
                       >
                         <img width="24" src="images/icon_edit.png" />

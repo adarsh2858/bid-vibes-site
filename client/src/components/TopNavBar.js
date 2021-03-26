@@ -19,10 +19,10 @@ const TopNavBar = ({ showLoggedInInfo, showCounterValue, isUserLoggedIn }) => {
           </a>
           {!isUserLoggedIn ? (
             <div className="">
-              <a className="m-3" href="/login">
+              <a className="m-3 btn btn-success" href="/login">
                 Login
               </a>
-              <a className="m-3" href="/register">
+              <a className="m-3 btn btn-primary" href="/register">
                 Sign Up
               </a>
             </div>

@@ -87,10 +87,19 @@ const AllProducts = () => {
                     />
                     <div className="mx-2">
                       <h4 id="header">{product.name}</h4>
-                      {/* <p style={{ "whiteSpace": 'normal' }}>
+                      <p
+                        style={{
+                          whiteSpace: "normal",
+                          // 'whiteSpace': 'nowrap',
+                          overflow: "hidden",
+                          "textOverflow": "ellipsis",
+                          "maxWidth": "200px",
+                          "maxHeight": "200px",
+                        }}
+                      >
                         {product.description}
-                      </p> */}
-                      <p>{product.description}</p>
+                      </p>
+                      {/* <p>{product.description}</p> */}
                     </div>
                   </div>
                   <div>
@@ -122,7 +131,9 @@ const AllProducts = () => {
             ))
           : null}
       </NavBar>
-      <footer className="m-2 p-2 text-center">Copyright Adarsh Inc. 2021</footer>
+      <footer className="m-2 p-2 text-center">
+        Copyright Adarsh Inc. 2021
+      </footer>
     </div>
   );
 };

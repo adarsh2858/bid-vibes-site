@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import classnames from "classnames";
 import "../../public/css/nav-items.css";
 
 class NavBar extends Component {
@@ -19,33 +20,25 @@ class NavBar extends Component {
     return (
       <div className="menu-container container">
         <div>
-          <button onClick={() => this.handleNav("left")}>Prev</button>
+          <button className="mr-2" onClick={() => this.handleNav("left")}>
+            Prev
+          </button>
         </div>
-        <div className="nav-items" ref={this.navRef}>
-          <a href="#home">Home</a>
-          <a href="#about">About Us</a>
-          <a href="#dropdown">Dropdown</a>
-          <a href="#radio-button">Radio Button</a>
-          <a href="#foo-bar">Foo Bar</a>
-          <a href="#blog">Blog</a>
-          <a href="#support">Support</a>
-          <a href="#home">Home</a>
-          <a href="#about">About Us</a>
-          <a href="#dropdown">Dropdown</a>
-          <a href="#radio-button">Radio Button</a>
-          <a href="#foo-bar">Foo Bar</a>
-          <a href="#blog">Blog</a>
-          <a href="#support">Support</a>
-          <a href="#home">Home</a>
-          <a href="#about">About Us</a>
-          <a href="#dropdown">Dropdown</a>
-          <a href="#radio-button">Radio Button</a>
-          <a href="#foo-bar">Foo Bar</a>
-          <a href="#blog">Blog</a>
-          <a href="#support">Support</a>
+        <div
+          className={classnames(
+            `nav-items ${this.props.className ? this.props.className : ""}`
+          )}
+          ref={this.navRef}
+        >
+          {this.props.children}
         </div>
         <div>
-          <button onClick={() => this.handleNav("right")}>Next</button>
+          <button
+            style={{ marginLeft: "0.5rem" }}
+            onClick={() => this.handleNav("right")}
+          >
+            Next
+          </button>
         </div>
       </div>
     );

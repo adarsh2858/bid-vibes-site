@@ -35,7 +35,6 @@ class App extends React.Component {
     return (
       <div>
         <TopNavBar isUserLoggedIn={this.state.isUserLoggedIn} />
-        <NavBar />
         {/* <h1>Welcome to Adarsh Products1!</h1> */}
       </div>
     );

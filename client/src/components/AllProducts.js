@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import NavBar from "./NavBar";
 
 const AllProducts = () => {
   const [productsList, setProductsList] = useState([]);
@@ -69,7 +70,7 @@ const AllProducts = () => {
         </button>
       </div>
 
-      <div className="row">
+      <NavBar className="d-flex flex-row">
         {productsList.length > 0
           ? productsList.map((product) => (
               <div
@@ -86,6 +87,9 @@ const AllProducts = () => {
                     />
                     <div className="mx-2">
                       <h4 id="header">{product.name}</h4>
+                      {/* <p style={{ "whiteSpace": 'normal' }}>
+                        {product.description}
+                      </p> */}
                       <p>{product.description}</p>
                     </div>
                   </div>
@@ -117,7 +121,8 @@ const AllProducts = () => {
               </div>
             ))
           : null}
-      </div>
+      </NavBar>
+      <footer className="m-2 p-2 text-center">Copyright Adarsh Inc. 2021</footer>
     </div>
   );
 };

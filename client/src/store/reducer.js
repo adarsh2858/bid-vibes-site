@@ -1,3 +1,5 @@
+import * as actionTypes from "./actions";
+
 const initialState = {
   isUserLoggedIn: false,
   counter: 0,
@@ -5,31 +7,31 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case "SWITCH_LOGIN":
+    case actionTypes.SWITCH_LOGIN:
       return {
         ...state,
         isUserLoggedIn: !state.isUserLoggedIn,
       };
 
-    case "INCREMENT":
+    case actionTypes.INCREMENT:
       return {
         ...state,
         counter: state.counter + 1,
       };
 
-    case "DECREMENT":
+    case actionTypes.DECREMENT:
       return {
         ...state,
         counter: state.counter - 1,
       };
 
-    case "ADD":
+    case actionTypes.ADD:
       return {
         ...state,
         counter: state.counter + action.value,
       };
 
-    case "SUBTRACT":
+    case actionTypes.SUBTRACT:
       return {
         ...state,
         counter: state.counter - action.value,

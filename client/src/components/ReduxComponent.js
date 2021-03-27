@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import * as actionTypes from "../store/actions";
 
 const ReduxComponent = ({
   showLoggedInInfo,
@@ -36,11 +37,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onLoginButtonClick: () => dispatch({ type: "SWITCH_LOGIN" }),
-    onIncrementCounter: () => dispatch({ type: "INCREMENT" }),
-    onDecrementCounter: () => dispatch({ type: "DECREMENT" }),
-    onAddition: () => dispatch({ type: "ADD", value: 10 }),
-    onSubtraction: () => dispatch({ type: "SUBTRACT", value: 5 }),
+    onLoginButtonClick: () => dispatch({ type: actionTypes.SWITCH_LOGIN }),
+    onIncrementCounter: () => dispatch({ type: actionTypes.INCREMENT }),
+    onDecrementCounter: () => dispatch({ type: actionTypes.DECREMENT }),
+    onAddition: () => dispatch({ type: actionTypes.ADD, value: 10 }),
+    onSubtraction: () => dispatch({ type: actionTypes.SUBTRACT, value: 5 }),
   };
 };
 

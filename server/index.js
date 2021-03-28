@@ -82,6 +82,11 @@ app.use((req, res, next) => {
   next();
 });
 app.use(jwtAuthentication.jwtAuthenticationMiddleware);
+// Use the following to have user_id without calling isAuthenticatedMiddleware on the routes
+// app.use((req, res, next) => {
+//   res.locals.user_id = req.user_id;
+//   next();
+// });
 
 app.set("views", path.join("client/public"));
 app.set("view engine", "ejs");
@@ -156,7 +161,19 @@ app.get(
   "/products/:id/edit",
   jwtAuthentication.isAuthenticatedMiddleware,
   (req, res) => {
-    res.sendFile("edit_product.html", { root: "client/public" });
+    connection.query(
+      "SELECT user_id FROM products WHERE id = ?",
+      [req.params.id],
+      (error, results, fields) => {
+        if (error) console.log("ERROR while editing - " + error);
+        if (res.locals.user_id == results[0].user_id)
+          res.sendFile("edit_product.html", { root: "client/public" });
+        else {
+          res.status(401);
+          res.json({ error: "Unauthorized Access." });
+        }
+      }
+    );
   }
 );
 
@@ -315,7 +332,7 @@ app.get("/redux", (req, res) => {
 app.get(
   "/check-user-authorization",
   jwtAuthentication.isAuthenticatedMiddleware,
-  (req,res) => {
+  (req, res) => {
     res.json({ userId: res.locals.user_id });
   }
 );

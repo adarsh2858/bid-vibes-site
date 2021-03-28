@@ -111,7 +111,7 @@ const AllProducts = () => {
                     >
                       More Info
                     </button>
-                    <div className="d-flex justify-content-around">
+                    <div className="d-flex flex-column flex-md-row flex-lg-row justify-content-around">
                       <button
                         className="btn btn-warning px-5"
                         onClick={() => handleEditButtonClick(product.id)}

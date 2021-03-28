@@ -55,6 +55,7 @@ const jwtAuthenticationMiddleware = (req, res, next) => {
 // This middleware stops the request if a user is not authenticated.
 async function isAuthenticatedMiddleware(req, res, next) {
   if (req.userId) {
+    res.locals.user_id = req.userId;
     return next();
   }
 

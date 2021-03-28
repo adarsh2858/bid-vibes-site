@@ -312,6 +312,14 @@ app.get("/redux", (req, res) => {
   res.sendFile("redux.html", { root: "client/public" });
 });
 
+app.get(
+  "/check-user-authorization",
+  jwtAuthentication.isAuthenticatedMiddleware,
+  (req,res) => {
+    res.json({ userId: res.locals.user_id });
+  }
+);
+
 app.get("/close", jwtAuthentication.isAuthenticatedMiddleware, (req, res) => {
   // Close the connection with database
   connection.end(function () {

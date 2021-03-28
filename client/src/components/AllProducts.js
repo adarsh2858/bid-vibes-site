@@ -6,7 +6,23 @@ import NavBar from "./NavBar";
 
 const AllProducts = () => {
   const [productsList, setProductsList] = useState([]);
+  let [
+    isUserAuthorizedToModifyProduct,
+    setIsUserAuthorizedToModifyProduct,
+  ] = useState(false);
+
   const bannerRef = useRef(null);
+
+  const checkUserAuthorization = async () => {
+    try {
+      const response = await axios.get("/check-user-authorization");
+      if ("userId" in response.data) setIsUserAuthorizedToModifyProduct(true);
+    } catch (err) {}
+  };
+
+  useEffect(() => {
+    checkUserAuthorization();
+  }, []);
 
   const handleAddNewProductButtonClick = async () => {
     try {
@@ -92,9 +108,9 @@ const AllProducts = () => {
                           whiteSpace: "normal",
                           // 'whiteSpace': 'nowrap',
                           overflow: "hidden",
-                          "textOverflow": "ellipsis",
-                          "maxWidth": "200px",
-                          "maxHeight": "200px",
+                          textOverflow: "ellipsis",
+                          maxWidth: "200px",
+                          maxHeight: "200px",
                         }}
                       >
                         {product.description}
@@ -111,20 +127,22 @@ const AllProducts = () => {
                     >
                       More Info
                     </button>
-                    <div className="d-flex flex-column flex-md-row flex-lg-row justify-content-around">
-                      <button
-                        className="btn btn-warning px-5"
-                        onClick={() => handleEditButtonClick(product.id)}
-                      >
-                        <img width="24" src="images/icon_edit.png" />
-                      </button>
-                      <button
-                        className="btn btn-danger px-5"
-                        onClick={() => handleDeleteButtonClick(product.id)}
-                      >
-                        <img width="24" src="images/icon_delete.png" />
-                      </button>
-                    </div>
+                    {isUserAuthorizedToModifyProduct ? (
+                      <div className="d-flex flex-column flex-md-row flex-lg-row justify-content-around">
+                        <button
+                          className="btn btn-warning px-5"
+                          onClick={() => handleEditButtonClick(product.id)}
+                        >
+                          <img width="24" src="images/icon_edit.png" />
+                        </button>
+                        <button
+                          className="btn btn-danger px-5"
+                          onClick={() => handleDeleteButtonClick(product.id)}
+                        >
+                          <img width="24" src="images/icon_delete.png" />
+                        </button>
+                      </div>
+                    ) : null}
                   </div>
                 </div>
               </div>

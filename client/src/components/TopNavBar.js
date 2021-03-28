@@ -4,9 +4,6 @@ import { connect } from "react-redux";
 const TopNavBar = ({ showLoggedInInfo, showCounterValue, isUserLoggedIn }) => {
   return (
     <div>
-      {console.log("showLoggedInInfo")}
-      {console.log(showLoggedInInfo)}
-      {console.log(showCounterValue)}
       <nav className="navbar bg-light">
         <div className="container">
           <a className="navbar-brand" href="/">

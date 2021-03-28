@@ -219,15 +219,17 @@ app.get(
   "/products/:id/delete",
   jwtAuthentication.isAuthenticatedMiddleware,
   (req, res) => {
-    $query = `DELETE FROM products WHERE ID = ${req.params.id}`;
+    $query = `DELETE FROM products WHERE ID = ${req.params.id} AND USER_ID = ${res.locals.user_id}`;
 
-    connection.query($query, (err) => {
+    connection.query($query, (err, results) => {
       if (err) {
         console.log("ERROR while deleting - " + err);
       }
+      console.log(results);
+      if (results.affectedRows == 0)
+        res.json({ error: "Unauthorized access." });
+      else res.redirect("/products");
     });
-
-    return res.redirect("/products");
   }
 );
 

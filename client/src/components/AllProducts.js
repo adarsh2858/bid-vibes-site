@@ -6,17 +6,18 @@ import NavBar from "./NavBar";
 
 const AllProducts = () => {
   const [productsList, setProductsList] = useState([]);
-  let [
-    isUserAuthorizedToModifyProduct,
-    setIsUserAuthorizedToModifyProduct,
-  ] = useState(false);
+  let [isUserSignedIn, setIsUserSignedIn] = useState(false);
+  let [signedInUserId, setSignedInUserId] = useState(null);
 
   const bannerRef = useRef(null);
 
   const checkUserAuthorization = async () => {
     try {
       const response = await axios.get("/check-user-authorization");
-      if ("userId" in response.data) setIsUserAuthorizedToModifyProduct(true);
+      if ("userId" in response.data) {
+        setIsUserSignedIn(true);
+        setSignedInUserId(response.data.userId);
+      }
     } catch (err) {}
   };
 
@@ -88,65 +89,67 @@ const AllProducts = () => {
 
       <NavBar className="d-flex flex-row">
         {productsList.length > 0
-          ? productsList.map((product) => (
-              <div
-                className="col-xs-12 col-sm-12 col-md-6 col-lg-4 mb-4"
-                key={product.id}
-              >
-                <div className="rounded p-4 bg-white">
-                  <div>
-                    <img
-                      className="rounded mb-4 img-fluid"
-                      width="300"
-                      src={product.image}
-                      alt="Product Image"
-                    />
-                    <div className="mx-2">
-                      <h4 id="header">{product.name}</h4>
-                      <p
-                        style={{
-                          whiteSpace: "normal",
-                          // 'whiteSpace': 'nowrap',
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          maxWidth: "200px",
-                          maxHeight: "200px",
-                        }}
+          ? productsList.map((product) => {
+              return (
+                <div
+                  className="col-xs-12 col-sm-12 col-md-6 col-lg-4 mb-4"
+                  key={product.id}
+                >
+                  <div className="rounded p-4 bg-white">
+                    <div>
+                      <img
+                        className="rounded mb-4 img-fluid"
+                        width="300"
+                        src={product.image}
+                        alt="Product Image"
+                      />
+                      <div className="mx-2">
+                        <h4 id="header">{product.name}</h4>
+                        <p
+                          style={{
+                            whiteSpace: "normal",
+                            // 'whiteSpace': 'nowrap',
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            maxWidth: "200px",
+                            maxHeight: "200px",
+                          }}
+                        >
+                          {product.description}
+                        </p>
+                        {/* <p>{product.description}</p> */}
+                      </div>
+                    </div>
+                    <div>
+                      <button
+                        className="btn btn-info form-control mb-2"
+                        onClick={() =>
+                          (window.location = `/products/${product.id}/show`)
+                        }
                       >
-                        {product.description}
-                      </p>
-                      {/* <p>{product.description}</p> */}
+                        More Info
+                      </button>
+                      {isUserSignedIn && signedInUserId == product.user_id ? (
+                        <div className="d-flex flex-column flex-md-row flex-lg-row justify-content-around">
+                          <button
+                            className="btn btn-warning px-5"
+                            onClick={() => handleEditButtonClick(product.id)}
+                          >
+                            <img width="24" src="images/icon_edit.png" />
+                          </button>
+                          <button
+                            className="btn btn-danger px-5"
+                            onClick={() => handleDeleteButtonClick(product.id)}
+                          >
+                            <img width="24" src="images/icon_delete.png" />
+                          </button>
+                        </div>
+                      ) : null}
                     </div>
                   </div>
-                  <div>
-                    <button
-                      className="btn btn-info form-control mb-2"
-                      onClick={() =>
-                        (window.location = `/products/${product.id}/show`)
-                      }
-                    >
-                      More Info
-                    </button>
-                    {isUserAuthorizedToModifyProduct ? (
-                      <div className="d-flex flex-column flex-md-row flex-lg-row justify-content-around">
-                        <button
-                          className="btn btn-warning px-5"
-                          onClick={() => handleEditButtonClick(product.id)}
-                        >
-                          <img width="24" src="images/icon_edit.png" />
-                        </button>
-                        <button
-                          className="btn btn-danger px-5"
-                          onClick={() => handleDeleteButtonClick(product.id)}
-                        >
-                          <img width="24" src="images/icon_delete.png" />
-                        </button>
-                      </div>
-                    ) : null}
-                  </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           : null}
       </NavBar>
       <footer className="m-2 p-2 text-center">

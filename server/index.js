@@ -143,8 +143,9 @@ app.post(
   jwtAuthentication.isAuthenticatedMiddleware,
   (req, res) => {
     //perform a query
-    $query = `insert into products (name, description, user_id) values 
-      ('${req.body.name}','${req.body.description}', '${res.locals.user_id}')`;
+    $query = `insert into products (name, description, image, user_id) 
+      values ('${req.body.name}','${req.body.description}', 
+        '${req.body.image}', '${res.locals.user_id}')`;
 
     connection.query($query, function (err, rows, fields) {
       if (err) {

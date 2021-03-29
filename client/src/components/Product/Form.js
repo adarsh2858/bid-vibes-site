@@ -10,15 +10,23 @@ const ProductForm = (props) => {
   const submitButtonRef = useRef(null);
 
   useEffect(() => {
-    const loadProduct = async () => {
-      const productInfo = await fetch(window.location.href + "Info");
-      const product = await productInfo.json();
-      setLoadedProduct(product);
+    if (props.action != "new") {
+      const loadProduct = async () => {
+        const productInfo = await fetch(window.location.href + "Info");
+        const product = await productInfo.json();
+        setLoadedProduct(product);
 
-      const image = { secure_url: product.image || "" };
-      setUploadedImage(image);
-    };
-    loadProduct();
+        const image = { secure_url: product.image || "" };
+        setUploadedImage(image);
+      };
+      loadProduct();
+    } else {
+      setLoadedProduct({
+        name: "",
+        description: "",
+        image: "",
+      });
+    }
   }, []);
 
   const onFileChange = (event) => {
@@ -55,7 +63,7 @@ const ProductForm = (props) => {
       submitButtonRef.current.classList.add("btn");
       submitButtonRef.current.classList.add("btn-success");
     }
-  }, [submitButtonRef.current]);
+  }, [loadedProduct, submitButtonRef.current]);
 
   return (
     <div className="p-4 relative">

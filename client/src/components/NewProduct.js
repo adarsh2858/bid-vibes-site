@@ -1,20 +1,11 @@
 import React from "react";
+import Form from "./Product/Form";
 
 const NewProduct = () => {
   return (
-    <div className="p-4">
-      <h1 className="text-center">New Product</h1>
-      <form method="post" action="/product/new">
-        <div className="form-group">
-          <label>Name</label>
-          <input className="form-control" type="text" name="name" required/>
-        </div>
-          <label>Description</label>
-        <div className="form-group">
-          <textarea className="form-control" rows="10" name="description" />
-        </div>
-        <button className="btn btn-success">Submit</button>
-      </form>
+    <div>
+      <h1 className="m-4 text-center">New Product Form</h1>
+      <Form action="new" />
     </div>
   );
 };

@@ -4,7 +4,7 @@ const NewProduct = () => {
   return (
     <div className="p-4">
       <h1 className="text-center">New Product</h1>
-      <form method="post" action="/products/new">
+      <form method="post" action="/product/new">
         <div className="form-group">
           <label>Name</label>
           <input className="form-control" type="text" name="name" required/>

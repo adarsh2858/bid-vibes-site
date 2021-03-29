@@ -131,7 +131,7 @@ app.get("/all-products", (req, res) => {
 });
 
 app.get(
-  `/products/new`,
+  `/product/new`,
   jwtAuthentication.isAuthenticatedMiddleware,
   (req, res) => {
     res.sendFile("new_product.html", { root: "client/public" });
@@ -139,7 +139,7 @@ app.get(
 );
 
 app.post(
-  "/products/new",
+  "/product/new",
   jwtAuthentication.isAuthenticatedMiddleware,
   (req, res) => {
     //perform a query
@@ -158,7 +158,7 @@ app.post(
 );
 
 app.get(
-  "/products/:id/edit",
+  "/product/:id/edit",
   jwtAuthentication.isAuthenticatedMiddleware,
   (req, res) => {
     connection.query(
@@ -178,7 +178,7 @@ app.get(
 );
 
 app.get(
-  "/products/:id/editInfo",
+  "/product/:id/editInfo",
   jwtAuthentication.isAuthenticatedMiddleware,
   (req, res) => {
     connection.query(
@@ -193,7 +193,7 @@ app.get(
 );
 
 app.post(
-  "/products/:id/edit",
+  "/product/:id/edit",
   jwtAuthentication.isAuthenticatedMiddleware,
   (req, res) => {
     $query = `UPDATE products SET name = '${req.body.name}', 
@@ -216,7 +216,7 @@ app.post("/image-upload", (req, res) => {
 });
 
 app.get(
-  "/products/:id/delete",
+  "/product/:id/delete",
   jwtAuthentication.isAuthenticatedMiddleware,
   (req, res) => {
     $query = `DELETE FROM products WHERE ID = ${req.params.id} AND USER_ID = ${res.locals.user_id}`;
@@ -233,7 +233,7 @@ app.get(
   }
 );
 
-app.get("/products/:id/show", (req, res) => {
+app.get("/product/:id/show", (req, res) => {
   if (req.header("accept") == "application/json")
     return res.json({ productId: req.params.id });
 

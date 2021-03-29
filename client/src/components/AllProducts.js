@@ -28,9 +28,9 @@ const AllProducts = () => {
   const handleAddNewProductButtonClick = async () => {
     try {
       // Confirm whether the status code return from the backend is not 4xx
-      await axios.get("/products/new");
+      await axios.get("/product/new");
 
-      window.location = "/products/new";
+      window.location = "/product/new";
     } catch (err) {
       toast.error(err.response.data.error);
     }
@@ -38,10 +38,10 @@ const AllProducts = () => {
 
   const handleEditButtonClick = async (productId) => {
     try {
-      const response = await axios.get(`/products/${productId}/edit`);
+      const response = await axios.get(`/product/${productId}/edit`);
 
       if (response.status === 200)
-        window.location = `/products/${productId}/edit`;
+        window.location = `/product/${productId}/edit`;
     } catch (err) {
       toast.error(err.response.data.error);
     }
@@ -50,10 +50,10 @@ const AllProducts = () => {
   const handleDeleteButtonClick = async (productId) => {
     try {
       if (confirm("Are you sure?")) {
-        const response = await axios.get(`/products/${productId}/delete`);
+        const response = await axios.get(`/product/${productId}/delete`);
 
         if (response.status === 200)
-          window.location = `/products/${productId}/delete`;
+          window.location = `/product/${productId}/delete`;
       }
     } catch (err) {
       toast.error(err.response.data.error);
@@ -124,7 +124,7 @@ const AllProducts = () => {
                       <button
                         className="btn btn-info form-control mb-2"
                         onClick={() =>
-                          (window.location = `/products/${product.id}/show`)
+                          (window.location = `/product/${product.id}/show`)
                         }
                       >
                         More Info

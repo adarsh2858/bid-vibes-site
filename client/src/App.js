@@ -5,14 +5,14 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import defaultImport from "./store/configureStore";
 import Login from "./components/Login";
-import LikeButton from "./components/LikeButton";
+import LikeButton from "./components/Clutter/LikeButton";
 import NewProduct from "./components/Product/New";
 import EditProduct from "./components/Product/Edit";
 import AllProducts from "./components/AllProducts";
 import AllUsers from "./components/AllUsers";
 import Comments from "./components/Comments";
 import TopNavBar from "./components/Shared/TopNavBar";
-import ReduxComponent from "./components/ReduxComponent";
+import ReduxComponent from "./components/Clutter/ReduxComponent";
 import "regenerator-runtime/runtime";
 
 const { store, persistor: newPersistor } = defaultImport();

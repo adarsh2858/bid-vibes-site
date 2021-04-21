@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import NavBar from "./Shared/NavBar";
+import ScrollBar from "./Shared/ScrollBar";
 
 const AllProducts = () => {
   const [productsList, setProductsList] = useState([]);
@@ -87,7 +87,7 @@ const AllProducts = () => {
         </button>
       </div>
 
-      <NavBar className="d-flex flex-row">
+      <ScrollBar className="d-flex flex-row">
         {productsList.length > 0
           ? productsList.map((product) => {
               return (
@@ -151,7 +151,7 @@ const AllProducts = () => {
               );
             })
           : null}
-      </NavBar>
+      </ScrollBar>
       <footer className="m-2 p-2 text-center">
         Copyright Adarsh Inc. 2021
       </footer>

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import classnames from "classnames";
 import "../../../public/css/nav-items.css";
 
-class NavBar extends Component {
+class ScrollBar extends Component {
   constructor(props) {
     super(props);
     this.navRef = React.createRef();
@@ -45,4 +45,4 @@ class NavBar extends Component {
   }
 }
 
-export default NavBar;
+export default ScrollBar;

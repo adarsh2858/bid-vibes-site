@@ -11,9 +11,8 @@ import EditProduct from "./components/EditProduct";
 import AllProducts from "./components/AllProducts";
 import AllUsers from "./components/AllUsers";
 import Comments from "./components/Comments";
-import TopNavBar from "./components/TopNavBar";
+import TopNavBar from "./components/Shared/TopNavBar";
 import ReduxComponent from "./components/ReduxComponent";
-import NavBar from "./components/Shared/NavBar";
 import "regenerator-runtime/runtime";
 
 const { store, persistor: newPersistor } = defaultImport();

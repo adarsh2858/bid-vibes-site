@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import NavBar from "./NavBar";
+import NavBar from "./Shared/NavBar";
 
 const AllProducts = () => {
   const [productsList, setProductsList] = useState([]);

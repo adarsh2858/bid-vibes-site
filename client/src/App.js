@@ -13,7 +13,7 @@ import AllUsers from "./components/AllUsers";
 import Comments from "./components/Comments";
 import TopNavBar from "./components/TopNavBar";
 import ReduxComponent from "./components/ReduxComponent";
-import NavBar from "./components/NavBar";
+import NavBar from "./components/Shared/NavBar";
 import "regenerator-runtime/runtime";
 
 const { store, persistor: newPersistor } = defaultImport();

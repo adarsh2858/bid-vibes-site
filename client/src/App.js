@@ -13,6 +13,7 @@ import AllUsers from "./components/AllUsers";
 import Comments from "./components/Comments";
 import TopNavBar from "./components/Shared/TopNavBar";
 import ReduxComponent from "./components/Clutter/ReduxComponent";
+import SearchBar from "./components/Shared/SearchBar";
 import "regenerator-runtime/runtime";
 
 const { store, persistor: newPersistor } = defaultImport();
@@ -84,7 +85,13 @@ if (document.getElementById("edit_product_container")) {
 }
 
 if (document.getElementById("all_products")) {
-  ReactDOM.render(<AllProducts />, document.getElementById("all_products"));
+  ReactDOM.render(
+    <div>
+      <SearchBar />
+      <AllProducts />
+    </div>,
+    document.getElementById("all_products")
+  );
 }
 
 if (document.getElementById("comments")) {

@@ -47,6 +47,7 @@
     "redux": "^4.0.5",
     "redux-persist": "^6.0.0",
     "regenerator-runtime": "^0.13.7",
+    "reload": "^3.1.1",
     "ssri": ">=8.0.1",
     "style-loader": "^2.0.0",
     "util": "^0.12.3",

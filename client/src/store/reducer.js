@@ -1,6 +1,7 @@
 import * as actionTypes from "./actions";
 
 const initialState = {
+  productsList: [],
   isUserLoggedIn: false,
   counter: 0,
 };
@@ -35,6 +36,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         counter: state.counter - action.value,
+      };
+
+    case actionTypes.LOAD_PRODUCTS:
+      return {
+        ...state,
+        productsList: action.payload,
       };
 
     default:

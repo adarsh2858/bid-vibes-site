@@ -1,13 +1,16 @@
 import axios from "axios";
+import { connect } from "react-redux";
 import React, { useEffect, useRef, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ScrollBar from "./Shared/ScrollBar";
+import { LOAD_PRODUCTS } from "../store/actions";
 
-const AllProducts = () => {
+const AllProducts = (props) => {
   const [productsList, setProductsList] = useState([]);
   let [isUserSignedIn, setIsUserSignedIn] = useState(false);
   let [signedInUserId, setSignedInUserId] = useState(null);
+  console.log("Foobar", props);
 
   const bannerRef = useRef(null);
 
@@ -67,6 +70,7 @@ const AllProducts = () => {
       })
       .then((products) => {
         setProductsList(products);
+        props.loadProucts(products);
       })
       .catch((err) => {
         console.log(err);
@@ -159,4 +163,12 @@ const AllProducts = () => {
   );
 };
 
-export default AllProducts;
+const mapStateToProps = (state) => ({ productsList: state.productsList })
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loadProucts: (loadedProducts) => dispatch({ type: LOAD_PRODUCTS, payload: loadedProducts }),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AllProducts)

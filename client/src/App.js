@@ -86,10 +86,10 @@ if (document.getElementById("edit_product_container")) {
 
 if (document.getElementById("all_products")) {
   ReactDOM.render(
-    <div>
+    <Provider store={store}>
       <SearchBar />
       <AllProducts />
-    </div>,
+    </Provider>,
     document.getElementById("all_products")
   );
 }

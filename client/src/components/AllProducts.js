@@ -10,7 +10,6 @@ const AllProducts = (props) => {
   const [productsList, setProductsList] = useState([]);
   let [isUserSignedIn, setIsUserSignedIn] = useState(false);
   let [signedInUserId, setSignedInUserId] = useState(null);
-  console.log("Foobar", props);
 
   const bannerRef = useRef(null);
 
@@ -76,6 +75,10 @@ const AllProducts = (props) => {
         console.log(err);
       });
   }, []);
+
+  useEffect(() => {
+    setProductsList(props.filteredProductsList);
+  }, [props.filteredProductsList]);
 
   return (
     <div className="container">
@@ -163,12 +166,16 @@ const AllProducts = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({ productsList: state.productsList })
+const mapStateToProps = (state) => ({
+  productsList: state.productsList,
+  filteredProductsList: state.filteredProductsList,
+});
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadProucts: (loadedProducts) => dispatch({ type: LOAD_PRODUCTS, payload: loadedProducts }),
-  }
-}
+    loadProucts: (loadedProducts) =>
+      dispatch({ type: LOAD_PRODUCTS, payload: loadedProducts }),
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(AllProducts)
+export default connect(mapStateToProps, mapDispatchToProps)(AllProducts);

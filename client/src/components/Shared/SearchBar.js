@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from "react";
+import { connect } from "react-redux";
+import { FILTER_PRODUCTS } from "../../store/actions";
 
-const SearchBar = () => {
+const SearchBar = ({ productsList, filterProucts }) => {
   const inputRef = useRef(null);
-  const ulRef = useRef(null);
 
   var delay = (function () {
     var timer = 0;
@@ -25,19 +26,11 @@ const SearchBar = () => {
 
   const handleChange = (event) => {
     const filter = event.target.value.toUpperCase();
-    // console.log(event.target.value);
-    const liElements = ulRef.current.getElementsByTagName('li');
+    const filteredProducts = productsList.filter((element) => {
+      if (element.name.toUpperCase().indexOf(filter) > -1) return element;
+    });
 
-    for (let i = 0; i < liElements.length; i++) {
-      const anchorTag = liElements[i].getElementsByTagName('a')[0];
-      const textValue = anchorTag.innerText;
-      console.log(textValue)
-      if (textValue.toUpperCase().indexOf(filter) > -1) {
-        liElements[i].style.display = '';
-      } else {
-        liElements[i].style.display = 'none';
-      }
-    }
+    filterProucts(filteredProducts);
   };
 
   return (
@@ -50,33 +43,18 @@ const SearchBar = () => {
         onChange={handleChange}
         ref={inputRef}
       />
-      <ul ref={ulRef}>
-        <li>
-          <a href="#">Adele</a>
-        </li>
-        <li>
-          <a href="#">Agnes</a>
-        </li>
-
-        <li>
-          <a href="#">Billy</a>
-        </li>
-        <li>
-          <a href="#">Bob</a>
-        </li>
-
-        <li>
-          <a href="#">Calvin</a>
-        </li>
-        <li>
-          <a href="#">Christina</a>
-        </li>
-        <li>
-          <a href="#">Cindy</a>
-        </li>
-      </ul>
     </div>
   );
 };
 
-export default SearchBar;
+const mapStateToProps = (state) => ({ productsList: state.productsList });
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    // Todo - Change the action type of dispatch to FILTER_PRODUCTS
+    filterProucts: (filteredProducts) =>
+      dispatch({ type: FILTER_PRODUCTS, payload: filteredProducts }),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);

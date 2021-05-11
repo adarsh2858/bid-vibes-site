@@ -34,12 +34,12 @@ const SearchBar = ({ productsList, filterProucts }) => {
   };
 
   return (
-    <div className="m-2">
-      <label className="m-2"> Search Something </label>
+    <div className="container mt-4">
+      <label className="m-2">Search for Products</label>
       <input
         type="text"
-        className="p-1 m-2"
-        placeholder="Enter foo bar"
+        className="p-1 m-2 rounded"
+        placeholder="Enter product title"
         onChange={handleChange}
         ref={inputRef}
       />

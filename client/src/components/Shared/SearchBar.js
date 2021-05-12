@@ -1,10 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FILTER_PRODUCTS } from '../../store/actions';
 
 const SearchBar = ({ productsList, filterProucts }) => {
   let timerId;
+  let throttleTimerId;
   const inputRef = useRef(null);
 
   const handleChange = () => {
@@ -22,6 +23,18 @@ const SearchBar = ({ productsList, filterProucts }) => {
     timerId = setTimeout(func, delay);
   });
 
+  /* eslint-disable */
+  const throttleFunc = (func, delay) => {
+    if (throttleTimerId) {
+      return;
+    }
+
+    throttleTimerId = setTimeout(() => {
+      func();
+      throttleTimerId = undefined;
+    }, delay);
+  };
+
   return (
     <div className="container mt-4">
       <label className="m-2" htmlFor={inputRef.current}>
@@ -30,7 +43,10 @@ const SearchBar = ({ productsList, filterProucts }) => {
           type="text"
           className="p-1 m-2 rounded"
           placeholder="Enter product title"
-          onChange={() => debounceFunc(handleChange, 1000)}
+          onChange={() => {
+            // throttleFunc(handleChange, 1000);
+            debounceFunc(handleChange, 1000);
+          }}
           ref={inputRef}
         />
       </label>

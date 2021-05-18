@@ -1,30 +1,30 @@
-import React, { useEffect, useRef, useState } from "react";
-import Spinner from "react-bootstrap/spinner";
+import React, { useEffect, useRef, useState } from 'react';
+import Spinner from 'react-bootstrap';
 
 const ProductForm = (props) => {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [uploadedImage, setUploadedImage] = useState({ secure_url: "" });
+  const [uploadedImage, setUploadedImage] = useState({ secure_url: '' });
   const [loadedProduct, setLoadedProduct] = useState(null);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false);
   const submitButtonRef = useRef(null);
 
   useEffect(() => {
-    if (props.action != "new") {
+    if (props.action !== 'new') {
       const loadProduct = async () => {
-        const productInfo = await fetch(window.location.href + "Info");
+        const productInfo = await fetch(`${window.location.href}Info`);
         const product = await productInfo.json();
         setLoadedProduct(product);
 
-        const image = { secure_url: product.image || "" };
+        const image = { secure_url: product.image || '' };
         setUploadedImage(image);
       };
       loadProduct();
     } else {
       setLoadedProduct({
-        name: "",
-        description: "",
-        image: "",
+        name: '',
+        description: '',
+        image: '',
       });
     }
   }, []);
@@ -37,10 +37,10 @@ const ProductForm = (props) => {
 
   const onFileUpload = async () => {
     const formData = new FormData();
-    formData.append("myFile", selectedFile);
+    formData.append('myFile', selectedFile);
 
-    const imageInfo = await fetch("http://localhost:3000/image-upload", {
-      method: "POST",
+    const imageInfo = await fetch('http://localhost:3000/image-upload', {
+      method: 'POST',
       body: formData,
     });
 
@@ -60,8 +60,8 @@ const ProductForm = (props) => {
 
   useEffect(() => {
     if (submitButtonRef.current) {
-      submitButtonRef.current.classList.add("btn");
-      submitButtonRef.current.classList.add("btn-success");
+      submitButtonRef.current.classList.add('btn');
+      submitButtonRef.current.classList.add('btn-success');
     }
   }, [loadedProduct, submitButtonRef.current]);
 
@@ -93,8 +93,8 @@ const ProductForm = (props) => {
             {showSpinner ? (
               <div
                 style={{
-                  display: "flex",
-                  justifyContent: "center",
+                  display: 'flex',
+                  justifyContent: 'center',
                 }}
               >
                 <Spinner animation="border" variant="success" />
@@ -108,16 +108,16 @@ const ProductForm = (props) => {
               onChange={handleChange}
               placeholder="Image URL"
             />
-            {uploadedImage.secure_url != "" && (
+            {uploadedImage.secure_url !== '' && (
               <img
                 width="300"
                 className="img-fluid block m-4"
                 src={uploadedImage.secure_url}
-                alt="Product Image"
+                alt="Product"
               />
             )}
           </div>
-          <button ref={submitButtonRef} disabled={isButtonDisabled}>
+          <button type="submit" ref={submitButtonRef} disabled={isButtonDisabled}>
             Submit
           </button>
         </form>

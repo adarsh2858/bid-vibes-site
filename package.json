@@ -4,6 +4,7 @@
   "description": "Website to create campgrounds with certain parameters.",
   "main": "index.js",
   "scripts": {
+    "build": "webpack --mode production",
     "start": "npm-run-all --parallel watch:server watch:build",
     "watch:build": "webpack --watch",
     "watch:server": "nodemon server/index.js",
